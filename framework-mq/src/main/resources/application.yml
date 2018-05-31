@@ -1,0 +1,12 @@
+spring:
+    ## rabbit mq properties
+    rabbitmq:
+        queueName: task.start.queue
+        exchange: task.start.exchange
+        routingKey: task.start.#
+        addresses: 10.198.20.253:5672  
+        userName: zhuguojin  
+        password: zhuguojin  
+        publisherConfirms: true
+        virtualHost: / 
+                                 

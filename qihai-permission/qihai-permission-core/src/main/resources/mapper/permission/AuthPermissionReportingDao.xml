@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qihai.permission.dao.AuthPermissionReportingDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.qihai.permission.entity.AuthPermissionReportingEntity" id="authPermissionReportingMap">
+        <result property="id" column="id"/>
+        <result property="serviceName" column="service_name"/>
+        <result property="url" column="url"/>
+        <result property="reportStatus" column="report_status"/>
+        <result property="reportName" column="report_name"/>
+        <result property="reportId" column="report_id"/>
+        <result property="reportDate" column="report_date"/>
+        <result property="count" column="count"/>
+        <result property="enabledFlag" column="enabled_flag"/>
+        <result property="traceId" column="trace_id"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qihai.permission.dao.AuthDimensionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.qihai.permission.entity.AuthDimensionEntity" id="authDimensionMap">
+        <result property="id" column="id"/>
+        <result property="dimensionCode" column="dimension_code"/>
+        <result property="dimensionName" column="dimension_name"/>
+        <result property="displayMode" column="display_mode"/>
+        <result property="openUrl" column="open_url"/>
+        <result property="propertyType" column="property_type"/>
+        <result property="dimensionDesc" column="dimension_desc"/>
+        <result property="enabledFlag" column="enabled_flag"/>
+        <result property="traceId" column="trace_id"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+
+</mapper>
