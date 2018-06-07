@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.alibaba.fastjson.JSON;
+import com.qihai.commerce.framework.mq.TUserTest;
 import com.rabbitmq.client.Channel;
 
 /**
@@ -26,7 +28,7 @@ public class TopicAmqpConfiguration {
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames("TOPICTEST1");
+        container.setQueueNames("queneT");
         container.setMessageListener(listener1());
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return container;
@@ -39,12 +41,18 @@ public class TopicAmqpConfiguration {
             @Override
             public void onMessage(Message message, Channel channel) throws Exception {
             	String str = new String(message.getBody());
-            	if ("2".equals(str)) {
+            	TUserTest userTest = null;
+            	try {
+            	    userTest = JSON.parseObject(str, TUserTest.class);
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
+            	if ("2".equals(userTest.getId())) {
                     channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
                     System.err.println("我已经消费2成功了");
-            	} else if ("3".equals(str)) {
-            		channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
-                    System.err.println("我已经消费3成功了");
+            	} else if ("3".equals(userTest.getId())) { //如果有异常决定是否保留消息在队列中,basicNack是保留消息在队列中
+                    channel.basicNack(message.getMessageProperties().getDeliveryTag(),false,true);
+                    System.err.println("消息重新回到队列");
             	}
 
             }

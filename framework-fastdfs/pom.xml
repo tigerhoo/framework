@@ -7,7 +7,7 @@
     <groupId>com.qihai.framework.fastdfs</groupId>
     <artifactId>framework-fastdfs</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.0.0-RELEASE</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -17,8 +17,29 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <nexus.content>http://10.198.1.103:8081/nexus/content</nexus.content>
     </properties>
 
+    <distributionManagement>
+		 <repository>
+			<id>nexus-rs</id>
+			<name>Sonatype Nexus Releases</name>
+			<url>${nexus.content}/repositories/releases</url>
+		 </repository>
+		 <snapshotRepository>
+			<id>nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>${nexus.content}/repositories/snapshots</url>
+		 </snapshotRepository>
+	</distributionManagement>
+	
+    <repositories>
+		 <repository>
+			<id>nexus-public</id>
+			<name>Nexus Repository</name>
+			<url>${nexus.content}/groups/public/</url>
+		 </repository>  
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,7 +57,7 @@
         <dependency>
             <groupId>org.csource</groupId>
             <artifactId>fastdfs-client-java</artifactId>
-            <version>1.27-SNAPSHOT</version>
+            <version>1.27-RELEASE</version>
         </dependency>
     </dependencies>
 

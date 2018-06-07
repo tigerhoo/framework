@@ -7,6 +7,7 @@ package com.qihai.commerce.framework.mq.producer;
  * @date 2018年5月24日 下午2:03:29
  * @version 1.0.0
  */
+@Deprecated
 public class RabbitMqEnum {
 
     //定义数据交换方式

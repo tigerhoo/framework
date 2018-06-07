@@ -2,7 +2,7 @@ spring:
     ## rabbit mq properties
     rabbitmq:
         consumer:
-             addresses: 10.198.20.253:5672
+             addresses: 10.198.13.253:5672
              userName: zhuguojin
              password: zhuguojin
              publisher-confirms: true

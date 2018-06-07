@@ -12,18 +12,14 @@ import com.qihai.permission.dao.AuthModuleDao;
 import com.qihai.permission.entity.AuthModuleEntity;
 import com.qihai.permission.service.AuthModuleService;
 
-
 @Service("authModuleService")
 public class AuthModuleServiceImpl extends ServiceImpl<AuthModuleDao, AuthModuleEntity> implements AuthModuleService {
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        Page<AuthModuleEntity> page = this.selectPage(
-                new Query<AuthModuleEntity>(params).getPage(),
-                new EntityWrapper<AuthModuleEntity>()
-        );
-
-        return new PageUtils(page);
-    }
+	@Override
+	public PageUtils queryPage(Map<String, Object> params, AuthModuleEntity authModuleEntity) {
+		Page<AuthModuleEntity> page = this.selectPage(new Query<AuthModuleEntity>(params).getPage(),
+				new EntityWrapper<AuthModuleEntity>(authModuleEntity));
+		return new PageUtils(page);
+	}
 
 }

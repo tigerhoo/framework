@@ -1,14 +1,12 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import com.qihai.commerce.framework.entity.DataEntity;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,6 +16,7 @@ import javax.validation.constraints.NotNull;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
+@ApiModel("资源上报模型")
 @TableName("auth_permission_reporting")
 public class AuthPermissionReportingEntity extends DataEntity<AuthPermissionReportingEntity> {
 
@@ -26,17 +25,20 @@ public class AuthPermissionReportingEntity extends DataEntity<AuthPermissionRepo
     /**
 	 * 主键ID
 	 */
+	@ApiModelProperty(name="id",value="id",dataType="Long")
     private Long id;
     
     /**
 	 * 微服务名(SUB_SYSTEM)。SYSTEM_CENTER-系统中心，AUTH_CENTER-授权中心，CRM-客户关系管理，OMS-订单系统
 	 */
+    @ApiModelProperty(name="serviceName",value="微服务名",required=true,dataType="String")
     @NotNull(message="微服务名不能为空")
     private String serviceName;
     
     /**
 	 * 访问这个域名的地址，如http://127.0.0.1:13018/
 	 */
+    @ApiModelProperty(name="url",value="域名",required=true,dataType="String")
     @NotNull(message="域名不能为空")
     private String url;
     

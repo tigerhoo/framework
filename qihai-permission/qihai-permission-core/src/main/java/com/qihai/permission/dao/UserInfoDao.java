@@ -1,9 +1,15 @@
 package com.qihai.permission.dao;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.qihai.permission.dto.UserRoleDTO;
 import com.qihai.permission.entity.UserInfoEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 
 /**
  * 
@@ -14,5 +20,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface UserInfoDao extends BaseMapper<UserInfoEntity> {
-	
+
+	List<UserRoleDTO> listUserRole(Pagination page, @Param("userId") Long userId);
+
 }

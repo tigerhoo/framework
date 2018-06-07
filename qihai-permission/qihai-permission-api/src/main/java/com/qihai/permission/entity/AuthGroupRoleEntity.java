@@ -7,6 +7,8 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.qihai.commerce.framework.entity.DataEntity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 /**
@@ -24,37 +26,44 @@ public class AuthGroupRoleEntity extends DataEntity<AuthGroupRoleEntity> {
     /**
 	 * id
 	 */
+	@ApiModelProperty(value="id,更新时必传参数",name="id")
     private Long id;
     
     /**
 	 * 用户组ID
 	 */
+	@ApiModelProperty(value="用户组ID",name="groupId",required=true)
     private Long groupId;
     
     /**
 	 * 角色ID
 	 */
+	@ApiModelProperty(value="角色ID",name="roleId",required=true)
     private Long roleId;
     
     /**
 	 * 
 	 */
+	@ApiModelProperty(value="数据范围id",name="dataRangeId",required=true)
     private Long dataRangeId;
     
   
     /**
 	 * 日志跟踪id
 	 */
+	@ApiModelProperty(hidden=true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+    @ApiModelProperty(hidden=true)
     private String createdBy;
     
     /**
 	 * 最后更新人
 	 */
+    @ApiModelProperty(hidden=true)
     private String updatedBy;
 	
 	/**

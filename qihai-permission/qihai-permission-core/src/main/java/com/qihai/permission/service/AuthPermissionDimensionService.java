@@ -15,6 +15,6 @@ import java.util.Map;
  */
 public interface AuthPermissionDimensionService extends IService<AuthPermissionDimensionEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,AuthPermissionDimensionEntity authPermissionDimension);
 }
 

@@ -1,6 +1,9 @@
 package com.qihai.permission.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -16,14 +19,23 @@ import com.qihai.permission.service.AuthDimensionService;
 @Service("authDimensionService")
 public class AuthDimensionServiceImpl extends ServiceImpl<AuthDimensionDao, AuthDimensionEntity> implements AuthDimensionService {
 
+	@Autowired
+	private AuthDimensionDao authDimensionDao;
+	
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,AuthDimensionEntity authDimensiony) {
         Page<AuthDimensionEntity> page = this.selectPage(
                 new Query<AuthDimensionEntity>(params).getPage(),
-                new EntityWrapper<AuthDimensionEntity>()
+                new EntityWrapper<AuthDimensionEntity>(authDimensiony)
         );
 
         return new PageUtils(page);
     }
+
+	@Override
+	public List<AuthDimensionEntity> listAll() {
+		List<AuthDimensionEntity> list = authDimensionDao.listAll();
+		return list;
+	}
 
 }

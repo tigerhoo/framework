@@ -1,13 +1,15 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.qihai.commerce.framework.entity.DataEntity;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 
@@ -16,6 +18,7 @@ import java.util.Date;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
+@ApiModel("菜单资源模型")
 @TableName("auth_menu_resources")
 public class AuthMenuResourcesEntity extends DataEntity<AuthMenuResourcesEntity> {
 
@@ -29,21 +32,28 @@ public class AuthMenuResourcesEntity extends DataEntity<AuthMenuResourcesEntity>
     /**
 	 * 路径编码
 	 */
+    @ApiModelProperty(name="menuCode",value="路径",required=true)
+    @NotBlank(message="路径不可为空")
     private String menuCode;
     
     /**
 	 * 标题
 	 */
+    @ApiModelProperty(name="menuTitle",value="标题",required=true,dataType="String")
+    @NotBlank(message="标题不可为空")
     private String menuTitle;
     
     /**
 	 * 父级节点
 	 */
+    @ApiModelProperty(name="parentId",value="父级节点",required=true,dataType="Long")
+    @NotNull(message="父节点不可为空")
     private Long parentId;
     
     /**
 	 * 图标
 	 */
+    @ApiModelProperty(name="menuIcon",value="图标",dataType="String")
     private String menuIcon;
     
     /**
@@ -52,18 +62,22 @@ public class AuthMenuResourcesEntity extends DataEntity<AuthMenuResourcesEntity>
     private String menuPath;
     
     /**
-	 * 打开方式
+	 * 打开方式(_self 本页面打开，_blank 新建标签页打开)
 	 */
+    @ApiModelProperty(name="menuType",value="打开方式(_self 本页面打开，_blank 新建标签页打开)",dataType="String")
     private String menuType;
     
     /**
 	 * 排序
 	 */
+    @ApiModelProperty(name="displaySequence",value="排序",dataType="Integer")
+    @NotNull(message="排序不可为空")
     private Integer displaySequence;
     
     /**
 	 * 描述
 	 */
+    @ApiModelProperty(name="description",value="描述",dataType="String")
     private String description;
     
     /**
@@ -74,6 +88,7 @@ public class AuthMenuResourcesEntity extends DataEntity<AuthMenuResourcesEntity>
     /**
 	 * 权限ID
 	 */
+    @ApiModelProperty(name="authMenuId",value="权限ID，关联auth_menu的id")
     private Long authMenuId;
     
     /**

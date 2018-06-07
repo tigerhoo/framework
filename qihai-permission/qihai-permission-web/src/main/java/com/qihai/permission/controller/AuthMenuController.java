@@ -3,19 +3,21 @@ package com.qihai.permission.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.qihai.commerce.framework.utils.ValidatorUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.qihai.commerce.framework.utils.PageUtils;
+import com.qihai.commerce.framework.utils.R;
+import com.qihai.commerce.framework.utils.ValidatorUtils;
 import com.qihai.permission.entity.AuthMenuEntity;
 import com.qihai.permission.service.AuthMenuService;
-import com.qihai.R;
-import com.qihai.commerce.framework.utils.PageUtils;
 
 
 
@@ -36,58 +38,58 @@ public class AuthMenuController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
     @RequiresPermissions("permission:authmenu:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = authMenuService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return new R<PageUtils>().ok(page);
     }
 
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     @RequiresPermissions("permission:authmenu:info")
-    public R info(@PathVariable("id") Long id){
+    public R<AuthMenuEntity> info(@PathVariable("id") Long id){
         AuthMenuEntity authMenu = authMenuService.selectById(id);
 
-        return R.ok().put("authMenu", authMenu);
+        return new R<AuthMenuEntity>().ok(authMenu);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("permission:authmenu:save")
-    public R save(@RequestBody AuthMenuEntity authMenu){
+    public R<Object> save(@RequestBody AuthMenuEntity authMenu){
         authMenuService.insert(authMenu);
 
-        return R.ok();
+        return new R<Object>().ok(null);
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("permission:authmenu:update")
-    public R update(@RequestBody AuthMenuEntity authMenu){
+    public R<Object> update(@RequestBody AuthMenuEntity authMenu){
         ValidatorUtils.validateEntity(authMenu);
-        authMenuService.updateAllColumnById(authMenu);//全部更新
+        authMenuService.updateById(authMenu);//全部更新
         
-        return R.ok();
+        return new R<Object>().ok(null);
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("permission:authmenu:delete")
-    public R delete(@RequestBody Long[] ids){
+    public R<Object> delete(@RequestBody Long[] ids){
         authMenuService.deleteBatchIds(Arrays.asList(ids));
 
-        return R.ok();
+        return new R<Object>().ok(null);
     }
 
 }

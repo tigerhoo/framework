@@ -7,6 +7,8 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.qihai.commerce.framework.entity.DataEntity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 /**
@@ -94,16 +96,19 @@ public class AuthMenuEntity extends DataEntity<AuthMenuEntity> {
     /**
 	 * 日志跟踪id
 	 */
+    @ApiModelProperty(hidden=true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+    @ApiModelProperty(hidden=true)
     private String createdBy;
     
     /**
 	 * 最后更新人
 	 */
+    @ApiModelProperty(hidden=true)
     private String updatedBy;
     
     /**

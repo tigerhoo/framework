@@ -1,13 +1,14 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.qihai.commerce.framework.entity.DataEntity;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 
@@ -16,6 +17,7 @@ import java.util.Date;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
+@ApiModel("用户角色关联表")
 @TableName("auth_user_role")
 public class AuthUserRoleEntity extends DataEntity<AuthUserRoleEntity> {
 
@@ -24,36 +26,46 @@ public class AuthUserRoleEntity extends DataEntity<AuthUserRoleEntity> {
     /**
 	 * ID
 	 */
+	@ApiModelProperty(name="id",value="id")
     private Long id;
     
     /**
 	 * 用户ID
 	 */
+	@ApiModelProperty(name="用户ID",value="userId",required=true)
+    @NotNull(message="用户不可为空")
     private Long userId;
     
     /**
 	 * 角色
 	 */
+	@ApiModelProperty(name="角色ID",value="roleId",required=true)
+    @NotNull(message="角色不可为空")
     private Long roleId;
     
     /**
 	 * 
 	 */
+	@ApiModelProperty(name="数据范围",value="dataRangeId",required=true)
+    @NotNull(message="数据范围不可为空")
     private Long dataRangeId;
     
     /**
 	 * 日志跟踪id
 	 */
+	@ApiModelProperty(hidden=true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+	@ApiModelProperty(hidden=true)
     private String createdBy;
     
     /**
 	 * 最后更新人
 	 */
+	@ApiModelProperty(hidden=true)
     private String updatedBy;
 	
 	/**

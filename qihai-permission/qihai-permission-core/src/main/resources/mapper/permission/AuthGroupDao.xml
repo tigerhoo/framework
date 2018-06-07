@@ -4,20 +4,58 @@
 <mapper namespace="com.qihai.permission.dao.AuthGroupDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.qihai.permission.entity.AuthGroupEntity" id="authGroupMap">
-        <result property="id" column="id"/>
-        <result property="groupName" column="group_name"/>
-        <result property="groupCode" column="group_code"/>
-        <result property="categoryCode" column="category_code"/>
-        <result property="enabledFlag" column="enabled_flag"/>
-        <result property="traceId" column="trace_id"/>
-        <result property="createdBy" column="created_by"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updatedBy" column="updated_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="delFlag" column="del_flag"/>
-        <result property="remarks" column="remarks"/>
-    </resultMap>
+	<resultMap type="com.qihai.permission.entity.AuthGroupEntity"
+		id="authGroupMap">
+		<result property="id" column="id" />
+		<result property="groupName" column="group_name" />
+		<result property="groupCode" column="group_code" />
+		<result property="categoryCode" column="category_code" />
+		<result property="enabledFlag" column="enabled_flag" />
+		<result property="traceId" column="trace_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createTime" column="create_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
 
+	<select id="listAttachUser"
+		resultType="com.qihai.permission.dto.UserGroupDTO">
+		SELECT
+		a.id,
+		b.created_by,
+		b.user_name,
+		b.mobile,
+		b.status,
+		b.type,
+		b.updated_by
+		FROM
+		auth_user_group a,
+		user_info b
+		WHERE
+		a.user_id =
+		b.id
+		and a.group_id=#{groupId}
+	</select>
+
+
+	<select id="listAttachRole"
+		resultType="com.qihai.permission.dto.GroupRoleDTO">
+		SELECT
+			b.id,
+			d.role_name,
+			b.created_by,
+			b.create_time,
+			c.data_range_name
+		FROM
+			auth_group_role b,
+			auth_data_range c,
+			auth_role d
+		WHERE
+			b.data_range_id = c.id
+			AND b.role_id = d.id
+			AND b.group_id = #{groupId}
+	</select>
 
 </mapper>

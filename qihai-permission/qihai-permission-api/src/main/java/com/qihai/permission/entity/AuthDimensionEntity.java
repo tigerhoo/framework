@@ -1,14 +1,10 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import com.qihai.commerce.framework.entity.DataEntity;
-
-import java.util.Date;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +15,7 @@ import javax.validation.constraints.NotNull;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
+@ApiModel("资源维度模型")
 @TableName("auth_dimension")
 public class AuthDimensionEntity extends DataEntity<AuthDimensionEntity> {
 
@@ -27,55 +24,65 @@ public class AuthDimensionEntity extends DataEntity<AuthDimensionEntity> {
     /**
 	 * 主键
 	 */
+	@ApiModelProperty(value="id,更新时必传参数",name="id")
     private Long id;
     
     /**
 	 * 维度编码
 	 */
+	@ApiModelProperty(value="维度编码",name="dimensionCode",required=true)
     @NotBlank(message="维度编码不能为空")
     private String dimensionCode;
     
     /**
 	 * 维度名称
 	 */
+	@ApiModelProperty(value="维度名称",name="dimensionName",required=true)
     @NotBlank(message="维度名称不可为空")
     private String dimensionName;
     
     /**
-	 * 10代表固定值 20 选择  30 数据字典
+	 * 值列表显示方式 （10代表固定值 20 选择  30 数据字典）
 	 */
+	@ApiModelProperty(value="值列表显示方式 （10代表固定值 20 选择  30 数据字典）",name="displayMode",required=true)
     @NotNull(message="值列表显示方式不可为空")
     private Integer displayMode;
     
     /**
 	 * 选择的URL地址
 	 */
+	@ApiModelProperty(value="URL地址",name="openUrl")
     private String openUrl;
     
     /**
-	 * 属性类型
+	 * 属性类型(10 数字，20 字符串)
 	 */
+	@ApiModelProperty(value="属性类型,10 数字，20 字符串",name="propertyType")
     private String propertyType;
     
     /**
 	 * 维度描述
 	 */
+	@ApiModelProperty(value="维度描述",name="dimensionDesc")
     private String dimensionDesc;
     
   
     /**
 	 * 日志跟踪id
 	 */
+	@ApiModelProperty(hidden = true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+	@ApiModelProperty(hidden = true)
     private String createdBy;
     
     /**
 	 * 修改人
 	 */
+	@ApiModelProperty(hidden = true)
     private String updatedBy;
 	
 	/**

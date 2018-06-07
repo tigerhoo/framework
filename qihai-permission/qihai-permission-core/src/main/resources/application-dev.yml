@@ -3,11 +3,11 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
-        #url: jdbc:mysql://10.198.1.102:3306/base_db?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        url: jdbc:mysql://localhost:3306/test1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://10.198.1.102:3306/permission?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        #url: jdbc:mysql://localhost:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
         username: root
-        #password: Kye.0415
-        password: root
+        password: Kye.0415
+        #password: root
         #连接池的配置信息
         initialSize: 10
         minIdle: 10

@@ -1,9 +1,14 @@
 package com.qihai.permission.dao;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
-import com.qihai.permission.entity.AuthGroupEntity;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import com.qihai.permission.dto.GroupRoleDTO;
+import com.qihai.permission.dto.UserGroupDTO;
+import com.qihai.permission.entity.AuthGroupEntity;
 
 /**
  * 
@@ -14,5 +19,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface AuthGroupDao extends BaseMapper<AuthGroupEntity> {
+
+	List<UserGroupDTO> listAttachUser(Pagination page,@Param("groupId") Long groupId);
+
+	List<GroupRoleDTO> listAttachRole(Pagination page,@Param("groupId") Long groupId);
 	
 }

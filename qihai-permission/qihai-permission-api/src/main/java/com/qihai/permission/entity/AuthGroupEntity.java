@@ -1,14 +1,11 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import com.qihai.commerce.framework.entity.DataEntity;
 
-import java.util.Date;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +16,7 @@ import javax.validation.constraints.NotNull;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
+@ApiModel("用户组模型")
 @TableName("auth_group")
 public class AuthGroupEntity extends DataEntity<AuthGroupEntity> {
 
@@ -27,38 +25,45 @@ public class AuthGroupEntity extends DataEntity<AuthGroupEntity> {
     /**
 	 * id
 	 */
+	@ApiModelProperty(value="id,更新时必传参数",name="id")
     private Long id;
     
     /**
 	 * 组名
 	 */
+	@ApiModelProperty(value="组名",name="groupName",required=true)
     @NotBlank(message="组名不能为空")
     private String groupName;
     
     /**
 	 * 组编码
 	 */
+	@ApiModelProperty(value="组编码",name="groupCode",required=true)
     @NotNull(message="组编码不能为空")
     private String groupCode;
     
     /**
 	 * 分类编码
 	 */
+	@ApiModelProperty(value="分类编码",name="categoryCode")
     private String categoryCode;
     
     /**
 	 * 日志跟踪id
 	 */
+	@ApiModelProperty(hidden=true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+	@ApiModelProperty(hidden=true)
     private String createdBy;
     
     /**
 	 * 最后更新人
 	 */
+	@ApiModelProperty(hidden=true)
     private String updatedBy;
 	
 	/**

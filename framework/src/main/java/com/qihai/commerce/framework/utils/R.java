@@ -1,5 +1,9 @@
 package com.qihai.commerce.framework.utils;
 
+import java.io.Serializable;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * 返回数据
  * 
@@ -7,19 +11,23 @@ package com.qihai.commerce.framework.utils;
  * @email zhuguojin@qihaiyun.com
  * @date 2017-06-08 0:00
  */
-public class R<T> {
-	
-	private int code;
-	
+public class R<T> implements Serializable {
+
+	private static final long serialVersionUID = -6886816416762519601L;
+
+	public static final String OK_CODE = "0";
+
+	private String code;
+
 	private String msg;
-	
+
 	private T data;
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 
@@ -38,17 +46,22 @@ public class R<T> {
 	public void setData(T data) {
 		this.data = data;
 	}
-	
+
 	public R<T> ok(T data) {
-		this.code = 0;
-		this.data = data; 
-		
+		this.code = OK_CODE;
+		this.data = data;
+
 		return this;
 	}
-	
-	public R<T> error(int code, String msg) {
+
+	public R<T> error(String code, String msg) {
 		this.code = code;
 		this.msg = msg;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

@@ -15,6 +15,6 @@ import java.util.Map;
  */
 public interface AuthModuleService extends IService<AuthModuleEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+	PageUtils queryPage(Map<String, Object> params, AuthModuleEntity authModuleEntity);
 }
 

@@ -4,19 +4,48 @@
 <mapper namespace="com.qihai.permission.dao.AuthUserGroupDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.qihai.permission.entity.AuthUserGroupEntity" id="authUserGroupMap">
-        <result property="id" column="id"/>
-        <result property="userId" column="user_id"/>
-        <result property="groupId" column="group_id"/>
-        <result property="enabledFlag" column="enabled_flag"/>
-        <result property="traceId" column="trace_id"/>
-        <result property="createdBy" column="created_by"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updatedBy" column="updated_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="delFlag" column="del_flag"/>
-        <result property="remarks" column="remarks"/>
-    </resultMap>
+	<resultMap
+		type="com.qihai.permission.entity.AuthUserGroupEntity"
+		id="authUserGroupMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="groupId" column="group_id" />
+		<result property="enabledFlag" column="enabled_flag" />
+		<result property="traceId" column="trace_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createTime" column="create_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+
+
+	<resultMap type="com.qihai.permission.dto.UserGroupDTO"
+		id="userGroupMap">
+		<result property="userId" column="user_id" />
+		<result property="groupId" column="group_id" />
+		<result property="userName" column="user_name" />
+		<result property="groupName" column="group_name" />
+	</resultMap>
+
+	<select id="selectByUserIdOrGroupId"  resultType="com.qihai.permission.entity.UserInfoEntity">
+		SELECT
+			c.*
+		FROM
+			auth_user_group a,
+			auth_group b,
+			user_info c
+		WHERE
+			a.group_id = b.id
+			AND a.user_id = c.id
+			<if test="userId!=null and userId!=''">
+				and user_id=#{userId}
+			</if>
+			<if test="groupId!=null and groupId!=''">
+				and group_id=#{groupId}
+			</if>
+	</select>
 
 
 </mapper>

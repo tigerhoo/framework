@@ -1,13 +1,13 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.qihai.commerce.framework.entity.DataEntity;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 
@@ -16,6 +16,7 @@ import java.util.Date;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
+@ApiModel("模块实体模型")
 @TableName("auth_module")
 public class AuthModuleEntity extends DataEntity<AuthModuleEntity> {
 
@@ -29,42 +30,50 @@ public class AuthModuleEntity extends DataEntity<AuthModuleEntity> {
     /**
 	 * 服务编码
 	 */
+    @ApiModelProperty(name="serviceCode",value="服务编码")
     private String serviceCode;
     
     /**
 	 * 模块编码
 	 */
+    @ApiModelProperty(name="moduleName",value="模块编码")
     private String moduleName;
     
     /**
 	 * 模块映射路径
 	 */
+    @ApiModelProperty(name="moduleMapping",value="模块映射路径")
     private String moduleMapping;
     
     /**
 	 * 模块描述
 	 */
+    @ApiModelProperty(name="description",value="模块描述")
     private String description;
     
     
     /**
 	 * 日志跟踪id
 	 */
+    @ApiModelProperty(hidden=true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+    @ApiModelProperty(hidden=true)
     private String createdBy;
     
     /**
 	 * 最后更新人
 	 */
+    @ApiModelProperty(hidden=true)
     private String updatedBy;
     
     /**
 	 * 版本
 	 */
+    @ApiModelProperty(name="version",value="版本")
     private Long version;
 	
 	/**

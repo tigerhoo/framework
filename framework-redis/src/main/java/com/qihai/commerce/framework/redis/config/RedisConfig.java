@@ -18,24 +18,25 @@ import redis.clients.jedis.JedisPoolConfig;
  * @date 2018年5月22日 下午2:03:29
  * @version 1.0.0
  */
-@Configuration
+@Deprecated
+//@Configuration
 public class RedisConfig {
-    @Value("${redis.host}")
+    //@Value("${redis.host}")
     private String redisHost;
-    @Value("${redis.port}")
+    //@Value("${redis.port}")
     private Integer redisPort;
-    @Value("${redis.pool.maxActive}")
+    //@Value("${redis.pool.maxActive}")
     private Integer redisMaxActive;
-    @Value("${redis.pool.maxIdle}")
+    //@Value("${redis.pool.maxIdle}")
     private Integer redisMaxIdle;
-    @Value("${redis.pool.maxWait}")
+    //@Value("${redis.pool.maxWait}")
     private Integer redisMaxWait;
-    @Value("${redis.password}")
+    //@Value("${redis.password}")
     private String password;
-    @Value("${redis.timeout}")
+    //@Value("${redis.timeout}")
     private Integer timeout;
 
-    @Bean(value = "jedisRedisClientPool")
+    //@Bean(value = "jedisRedisClientPool")
     public JedisRedisClient getJedisRedisClient() {
     	JedisPoolConfig config = new JedisPoolConfig();
 		config.setMaxTotal(this.redisMaxActive);

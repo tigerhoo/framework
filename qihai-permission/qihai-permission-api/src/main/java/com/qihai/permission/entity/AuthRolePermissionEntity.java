@@ -7,7 +7,12 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.qihai.commerce.framework.entity.DataEntity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 
@@ -16,6 +21,7 @@ import java.util.Date;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
+@ApiModel("角色权限关联模型")
 @TableName("auth_role_permission")
 public class AuthRolePermissionEntity extends DataEntity<AuthRolePermissionEntity> {
 
@@ -29,27 +35,34 @@ public class AuthRolePermissionEntity extends DataEntity<AuthRolePermissionEntit
     /**
 	 * 角色ID
 	 */
+    @ApiModelProperty(name="roleId",value="角色ID",required=true)
+    @NotNull(message="角色不可为空")
     private Long roleId;
     
     /**
 	 * 权限ID
 	 */
+    @ApiModelProperty(name="permissionId",value="权限ID",required=true)
+    @NotNull(message="权限不可为空")
     private Long permissionId;
     
     
     /**
 	 * 日志跟踪id
 	 */
+    @ApiModelProperty(hidden = true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+    @ApiModelProperty(hidden = true)
     private String createdBy;
     
     /**
 	 * 最后更新人
 	 */
+    @ApiModelProperty(hidden = true)
     private String updatedBy;
 	
 	/**

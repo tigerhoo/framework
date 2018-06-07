@@ -4,6 +4,12 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +29,7 @@ public class RabbitMqSender implements RabbitTemplate.ConfirmCallback{
     private static final Logger logger = LoggerFactory.getLogger(RabbitMqSender.class);
 
     private RabbitTemplate rabbitTemplate;
-
+    
     @Autowired
     public RabbitMqSender(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
@@ -40,10 +46,18 @@ public class RabbitMqSender implements RabbitTemplate.ConfirmCallback{
      * @param routeKey
      * @param obj
      */
-    public void sendRabbitmqDirect(String routeKey,Object obj) {
+    public void sendRabbitmqDirect(String exchange, String routeKey, String queueName, Object obj) {
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
         logger.info("send: " + correlationData.getId());
-        this.rabbitTemplate.convertAndSend(RabbitMqEnum.Exchange.CONTRACT_DIRECT.getCode(), routeKey , obj, correlationData);
+        this.rabbitTemplate.setExchange(exchange);
+        this.rabbitTemplate.setRoutingKey(routeKey);
+        RabbitAdmin admin = new RabbitAdmin(this.rabbitTemplate.getConnectionFactory());
+        admin.declareQueue(new Queue(queueName));
+        DirectExchange directExchange = new DirectExchange(exchange);
+        admin.declareExchange(directExchange);
+        Binding binding = BindingBuilder.bind(new Queue(queueName)).to(directExchange).with(routeKey);
+        admin.declareBinding(binding);
+        this.rabbitTemplate.convertAndSend(exchange, routeKey , obj, correlationData);
     }
 
     /**
@@ -51,9 +65,17 @@ public class RabbitMqSender implements RabbitTemplate.ConfirmCallback{
      * @param routeKey
      * @param obj
      */
-    public void sendRabbitmqTopic(String routeKey,Object obj) {
+    public void sendRabbitmqTopic(String exchange, String routeKey, String queueName, Object obj) {
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
         logger.info("send: " + correlationData.getId());
-        this.rabbitTemplate.convertAndSend(RabbitMqEnum.Exchange.CONTRACT_TOPIC.getCode(), routeKey , obj, correlationData);
+        this.rabbitTemplate.setExchange(exchange);
+        this.rabbitTemplate.setRoutingKey(routeKey);
+        RabbitAdmin admin = new RabbitAdmin(this.rabbitTemplate.getConnectionFactory());
+        admin.declareQueue(new Queue(queueName));
+        TopicExchange topicExchange = new TopicExchange(exchange);
+        admin.declareExchange(topicExchange);
+        Binding binding = BindingBuilder.bind(new Queue(queueName)).to(topicExchange).with(routeKey);
+        admin.declareBinding(binding);
+        this.rabbitTemplate.convertAndSend(exchange, routeKey , obj, correlationData);
     }
 }

@@ -11,50 +11,41 @@ public class RpcException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	private int code;
+	//错误编码
+	private String errorCode;
 
 	public RpcException() {
 		super();
-	}
-
-	public RpcException(String message) {
-		super(message);
 	}
 
 	public RpcException(Throwable cause) {
 		super(cause);
 	}
 
+	public RpcException(String message) {
+		super(message);
+	}
+
+	public RpcException(String errorCode, String message, Throwable cause) {
+		this(message, cause);
+		this.errorCode = errorCode;
+	}
+
+	public RpcException(String errorCode, String message) {
+		this(message);
+		this.errorCode = errorCode;
+	}
+
 	public RpcException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public RpcException(int code) {
-		super();
-		this.code = code;
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 
-	public RpcException(int code, String message, Throwable cause) {
-		this(message, cause);
-		this.code = code;
-	}
-
-	public RpcException(int code, String message) {
-		this(message);
-		this.code = code;
-	}
-
-	public RpcException(int code, Throwable cause) {
-		this(cause);
-		this.code = code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
-	}
-
-	public int getCode() {
-		return code;
+	public String getErrorCode() {
+		return errorCode;
 	}
 	
 }

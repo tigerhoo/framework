@@ -1,5 +1,7 @@
 package com.qihai.commerce.framework.exception;
 
+import com.qihai.commerce.framework.enums.BizErrorCode;
+
 /**
  * 
  *************************************************************** 
@@ -13,50 +15,49 @@ package com.qihai.commerce.framework.exception;
  */
 public class BaseException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1325426932819373813L;
 
-	private String msg;
-    private int code = 1500;
+	//错误信息
+	private String errorMsg;
+	//错误代码
+    private String errorCode = BizErrorCode.SysErrorType.SYSTEM_INNER_ERROR.getCode();
     
-    public BaseException(String msg) {
-		super(msg);
-		this.msg = msg;
+    public BaseException(String errorMsg) {
+		super(errorMsg);
+		this.errorMsg = errorMsg;
 	}
 	
-	public BaseException(String msg, Throwable e) {
-		super(msg, e);
-		this.msg = msg;
+	public BaseException(String errorMsg, Throwable e) {
+		super(errorMsg, e);
+		this.errorMsg = errorMsg;
 	}
 	
-	public BaseException(String msg, int code) {
-		super(msg);
-		this.msg = msg;
-		this.code = code;
+	public BaseException(String errorMsg, String errorCode) {
+		super(errorMsg);
+		this.errorMsg = errorMsg;
+		this.errorCode = errorCode;
 	}
 	
-	public BaseException(String msg, int code, Throwable e) {
-		super(msg, e);
-		this.msg = msg;
-		this.code = code;
+	public BaseException(String errorMsg, String errorCode, Throwable e) {
+		super(errorMsg, e);
+		this.errorMsg = errorMsg;
+		this.errorCode = errorCode;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getErrorMsg() {
+		return errorMsg;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
 	}
 
-	public int getCode() {
-		return code;
+	public String getErrorCode() {
+		return errorCode;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 
 }

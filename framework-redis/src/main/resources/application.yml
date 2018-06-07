@@ -1,9 +1,5 @@
 redis:
-  host: 10.198.20.253
-  port: 6379
   password: 123456
-  timeout: 2000
-  database: 0
   pool:
       maxActive: 300
       maxWait: 5000
@@ -11,7 +7,7 @@ redis:
       minIdle: 10
       testOnBorrow: true
   sentinel:
-      ips: 10.198.20.253:26379 
+      ips: 10.198.13.253:26379 
   master:
       name: mymaster     
        

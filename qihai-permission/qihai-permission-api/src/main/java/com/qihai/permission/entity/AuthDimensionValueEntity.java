@@ -1,13 +1,14 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.qihai.commerce.framework.entity.DataEntity;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 
@@ -16,6 +17,7 @@ import java.util.Date;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
+@ApiModel("数据范围维度关联表")
 @TableName("auth_dimension_value")
 public class AuthDimensionValueEntity extends DataEntity<AuthDimensionValueEntity> {
 
@@ -24,32 +26,40 @@ public class AuthDimensionValueEntity extends DataEntity<AuthDimensionValueEntit
     /**
 	 * 主键
 	 */
+	@ApiModelProperty(name="id",value="id")
     private Long id;
     
     /**
 	 * 维度定义ID 
 	 */
-    private Long authDimensionId;
+	@ApiModelProperty(name="authDimensionId",value="维度定义ID",required=true,dataType="Long")
+    @NotBlank(message="维度定义ID不可为空")
+	private Long authDimensionId;
     
     /**
 	 * 数据范围ID
 	 */
-    private Long dataRangeId;
+	@ApiModelProperty(name="authDimensionId",value="维度定义ID",required=true,dataType="Long")
+    @NotBlank(message="数据范围ID不可为空")
+	private Long dataRangeId;
     
    
     /**
 	 * 日志跟踪id
 	 */
+	@ApiModelProperty(hidden = true)
     private String traceId;
     
     /**
 	 * 创建人
 	 */
+	@ApiModelProperty(hidden = true)
     private String createdBy;
     
     /**
 	 * 修改人
 	 */
+	@ApiModelProperty(hidden = true)
     private String updatedBy;
 	
 	/**

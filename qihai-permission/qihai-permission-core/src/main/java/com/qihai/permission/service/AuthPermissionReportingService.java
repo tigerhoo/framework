@@ -15,6 +15,6 @@ import java.util.Map;
  */
 public interface AuthPermissionReportingService extends IService<AuthPermissionReportingEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,AuthPermissionReportingEntity authPermissionReporting);
 }
 

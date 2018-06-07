@@ -4,7 +4,7 @@ package com.qihai.commerce.framework.constant;
  * 公共常量类
  * 
  * @author zhugj
- * @date 2017年8月18日 下午2:35:06
+ * @date 2018年5月18日 下午2:35:06
  * @version 1.0.0 
  */
 public final class Constant {
@@ -82,18 +82,6 @@ public final class Constant {
 	public static final String RESULT_EXC_MSG = "操作异常！";
 	public static final String RESULT_ERR_MSG = "操作错误！";
 	public static final String RESULT_DEL_MSG = "删除成功！";
-	
-	public static final int ERROR_CODE_DATABASE_EXIST = 1007;
-	
-	public static final String ERROR_CODE_DATABASE_EXIST_MSG = "数据库中已存在该记录";
-	
-	public static final int ERROR_CODE_HAVE_NO_RIGHT = 403;
-	
-	public static final String ERROR_CODE_HAVE_NO_RIGHT_MSG = "没有权限，请联系管理员授权";
-	
-	public static final int ERROR_CODE_UNKNOWN_EXCEPTION = 1500;
-	
-	public static final String ERROR_CODE_UNKNOWN_EXCEPTION_MSG = "未知异常，请联系管理员";
 	
 	//线程数
     public final static int THREAD_COUNT = 5;

@@ -17,10 +17,10 @@ import com.qihai.permission.service.AuthPermissionReportingService;
 public class AuthPermissionReportingServiceImpl extends ServiceImpl<AuthPermissionReportingDao, AuthPermissionReportingEntity> implements AuthPermissionReportingService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,AuthPermissionReportingEntity authPermissionReporting) {
         Page<AuthPermissionReportingEntity> page = this.selectPage(
                 new Query<AuthPermissionReportingEntity>(params).getPage(),
-                new EntityWrapper<AuthPermissionReportingEntity>()
+                new EntityWrapper<AuthPermissionReportingEntity>(authPermissionReporting)
         );
 
         return new PageUtils(page);

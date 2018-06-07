@@ -2,6 +2,7 @@ package com.qihai.permission.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.qihai.commerce.framework.utils.PageUtils;
+import com.qihai.permission.dto.AuthDataRangeDTO;
 import com.qihai.permission.entity.AuthDataRangeEntity;
 
 import java.util.Map;
@@ -15,6 +16,11 @@ import java.util.Map;
  */
 public interface AuthDataRangeService extends IService<AuthDataRangeEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,AuthDataRangeEntity authDataRange);
+
+	void saveOrUpdate(AuthDataRangeDTO authDataRangeDTO);
+
+	AuthDataRangeDTO selectDataRangeById(Long id);
+
 }
 

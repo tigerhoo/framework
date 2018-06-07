@@ -11,50 +11,41 @@ public class DaoException extends Exception {
 
 	private static final long serialVersionUID = 3744880846740433336L;
 	
-	private int code;
+	//错误编码
+	private String errorCode;
 	
 	public DaoException() {
 		super();
-	}
-	
-	public DaoException(String message) {
-		super(message);
 	}
 	
 	public DaoException(Throwable cause) {
 		super(cause);
 	}
 	
-	public DaoException(String message, Throwable cause) {
-		super(message, cause);
-	}
-	
-	public DaoException(int code) {
-        super();
-        this.code = code;
+	public DaoException(String message) {
+		super(message);
     }
 	
-	public DaoException(int code, String message, Throwable cause) {
+	public DaoException(String errorCode, String message, Throwable cause) {
         this(message, cause);
-        this.code = code;
+        this.errorCode = errorCode;
     }
 
-    public DaoException(int code, String message) {
+    public DaoException(String errorCode, String message) {
         this(message);
-        this.code = code;
+        this.errorCode = errorCode;
     }
 
-    public DaoException(int code, Throwable cause) {
-        this(cause);
-        this.code = code;
+    public DaoException(String message, Throwable cause) {
+    	 super(message, cause);
     }
     
-    public void setCode(int code) {
-        this.code = code;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
     
-    public int getCode() {
-        return code;
+    public String getErrorCode() {
+        return errorCode;
     }
 	
 }

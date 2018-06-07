@@ -22,15 +22,15 @@ public class Swagger2Config {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.qihai.permission.controller"))
                 .paths(PathSelectors.any())
-                .build()
-                .directModelSubstitute(org.joda.time.LocalDate.class, java.sql.Date.class)
-                .directModelSubstitute(org.joda.time.DateTime.class, java.util.Date.class);
+                .build();
+                //.directModelSubstitute(org.joda.time.LocalDate.class, java.sql.Date.class)
+                //.directModelSubstitute(org.joda.time.DateTime.class, java.util.Date.class);
     }
     
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("springboot利用swagger构建api文档")
-                .description("简单优雅的restfun风格，http://blog.csdn.net/forezp")
+                .title("权限管理，springboot利用swagger构建api文档")
+                .description("接口说明文档")
                 .termsOfServiceUrl("http://blog.csdn.net/forezp")
                 .version("1.0")
                 .build();

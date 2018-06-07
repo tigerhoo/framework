@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.permission.entity.AuthMenuResourcesEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface AuthMenuResourcesService extends IService<AuthMenuResourcesEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+	List<AuthMenuResourcesEntity> listMenu(Long parentId);
 }
 

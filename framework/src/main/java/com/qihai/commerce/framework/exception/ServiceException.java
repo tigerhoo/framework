@@ -11,50 +11,42 @@ public class ServiceException extends RuntimeException {
 	
 	private static final long serialVersionUID = -8396020297026661487L;
 	
-	private int code;
+	//错误编码
+	private String errorCode;
 	
 	public ServiceException() {
 		super();
-	}
-	
-	public ServiceException(String message) {
-		super(message);
 	}
 	
 	public ServiceException(Throwable cause) {
 		super(cause);
 	}
 	
-	public ServiceException(String message, Throwable cause) {
-		super(message, cause);
-	}
-	
-	public ServiceException(int code) {
-        super();
-        this.code = code;
+	public ServiceException(String message) {
+		super(message);
     }
 	
-	public ServiceException(int code, String message, Throwable cause) {
+	public ServiceException(String errorCode, String message, Throwable cause) {
         super(message, cause);
-        this.code = code;
+        this.errorCode = errorCode;
     }
 
-    public ServiceException(int code, String message) {
-        super(message);
-        this.code = code;
+    public ServiceException(String errorCode, String message) {
+    	this(message);
+		this.errorCode = errorCode;
     }
 
-    public ServiceException(int code, Throwable cause) {
+    public ServiceException(String errorCode, Throwable cause) {
         super(cause);
-        this.code = code;
+        this.errorCode = errorCode;
     }
     
-    public void setCode(int code) {
-        this.code = code;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
     
-    public int getCode() {
-        return code;
+    public String getErrorCode() {
+        return errorCode;
     }
 	
 }

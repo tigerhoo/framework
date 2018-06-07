@@ -3,19 +3,27 @@ package com.qihai.permission.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.qihai.commerce.framework.utils.ValidatorUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qihai.permission.entity.AuthUserRoleEntity;
-import com.qihai.permission.service.AuthUserRoleService;
-import com.qihai.R;
 import com.qihai.commerce.framework.utils.PageUtils;
+import com.qihai.commerce.framework.utils.R;
+import com.qihai.commerce.framework.utils.ValidatorUtils;
+import com.qihai.permission.entity.AuthUserRoleEntity;
+import com.qihai.permission.entity.UserInfoEntity;
+import com.qihai.permission.service.AuthUserRoleService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 
 
 
@@ -27,6 +35,7 @@ import com.qihai.commerce.framework.utils.PageUtils;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
+@Api(value="用户角色管理")
 @RestController
 @RequestMapping("permission/authuserrole")
 public class AuthUserRoleController {
@@ -36,58 +45,59 @@ public class AuthUserRoleController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @ApiOperation(value = "查询用户角色关联列表",httpMethod ="POST", response = UserInfoEntity.class,notes = "返回查询结果集以及分页")
+    @ApiImplicitParam(name = "params", value = "分页请求参数，请放到请求url路径后用page=1&limit=10来表示请求第1页，每页显示10条，此值为默认", required = false)
+    @PostMapping("/list")
     @RequiresPermissions("permission:authuserrole:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = authUserRoleService.queryPage(params);
-
-        return R.ok().put("page", page);
+    public R<PageUtils> list(@RequestParam Map<String, Object> params,@RequestBody AuthUserRoleEntity authUserRole){
+        PageUtils page = authUserRoleService.queryPage(params,authUserRole);
+        return new R<PageUtils>().ok(page);
     }
 
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     @RequiresPermissions("permission:authuserrole:info")
-    public R info(@PathVariable("id") Long id){
+    public R<AuthUserRoleEntity> info(@PathVariable("id") Long id){
         AuthUserRoleEntity authUserRole = authUserRoleService.selectById(id);
 
-        return R.ok().put("authUserRole", authUserRole);
+        return new R<AuthUserRoleEntity>().ok(authUserRole);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     @RequiresPermissions("permission:authuserrole:save")
-    public R save(@RequestBody AuthUserRoleEntity authUserRole){
+    public R<Object> save(@RequestBody AuthUserRoleEntity authUserRole){
         authUserRoleService.insert(authUserRole);
 
-        return R.ok();
+        return new R<Object>().ok(null);    
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @RequiresPermissions("permission:authuserrole:update")
-    public R update(@RequestBody AuthUserRoleEntity authUserRole){
+    public R<Object> update(@RequestBody AuthUserRoleEntity authUserRole){
         ValidatorUtils.validateEntity(authUserRole);
-        authUserRoleService.updateAllColumnById(authUserRole);//全部更新
+        authUserRoleService.updateById(authUserRole);//全部更新
         
-        return R.ok();
+        return new R<Object>().ok(null);    
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @RequiresPermissions("permission:authuserrole:delete")
-    public R delete(@RequestBody Long[] ids){
+    public R<Object> delete(@RequestBody Long[] ids){
         authUserRoleService.deleteBatchIds(Arrays.asList(ids));
 
-        return R.ok();
+        return new R<Object>().ok(null);    
     }
 
 }

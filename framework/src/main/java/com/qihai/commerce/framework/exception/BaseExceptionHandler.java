@@ -7,14 +7,14 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.qihai.commerce.framework.constant.Constant;
+import com.qihai.commerce.framework.enums.BizErrorCode;
 import com.qihai.commerce.framework.utils.R;
 
 /**
  * 异常处理器
  *
  * @author Mark zhuguojin@qihaiyun.com
- * @since 1.0.0 2016-10-27
+ * @since 1.0.0 2018-5-27
  */
 @RestControllerAdvice
 public class BaseExceptionHandler {
@@ -25,9 +25,9 @@ public class BaseExceptionHandler {
 	 */
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(BaseException.class)
-	public R handleBaseException(BaseException e){
+	public R handleBaseException(BaseException e) {
 		R r = new R();
-		r.setCode(e.getCode());
+		r.setCode(e.getErrorCode());
 		r.setMsg(e.getMessage());
 
 		return r;
@@ -35,30 +35,30 @@ public class BaseExceptionHandler {
 
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(DuplicateKeyException.class)
-	public R handleDuplicateKeyException(DuplicateKeyException e){
+	public R handleDuplicateKeyException(DuplicateKeyException e) {
 		logger.error(e.getMessage(), e);
 		R r = new R();
-		r.setCode(Constant.ERROR_CODE_DATABASE_EXIST);
-		r.setMsg(Constant.ERROR_CODE_DATABASE_EXIST_MSG);
+		r.setCode(BizErrorCode.DBErrorType.DATA_ALREADY_EXISTED.getCode());
+		r.setMsg(BizErrorCode.DBErrorType.DATA_ALREADY_EXISTED.getDesc());
 		return r;
 	}
 
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(AuthorizationException.class)
-	public R handleAuthorizationException(AuthorizationException e){
+	public R handleAuthorizationException(AuthorizationException e) {
 		logger.error(e.getMessage(), e);
 		R r = new R();
-		r.setCode(Constant.ERROR_CODE_HAVE_NO_RIGHT);
-		r.setMsg(Constant.ERROR_CODE_HAVE_NO_RIGHT_MSG);
+		r.setCode(BizErrorCode.PermissionErrorType.PERMISSION_NO_ACCESS.getCode());
+		r.setMsg(BizErrorCode.PermissionErrorType.PERMISSION_NO_ACCESS.getDesc());
 		return r;
 	}
 
 	@ExceptionHandler(Exception.class)
-	public R handleException(Exception e){
+	public R handleException(Exception e) {
 		logger.error(e.getMessage(), e);
 		R r = new R();
-		r.setCode(Constant.ERROR_CODE_UNKNOWN_EXCEPTION);
-		r.setMsg(Constant.ERROR_CODE_UNKNOWN_EXCEPTION_MSG);
+		r.setCode(BizErrorCode.SysErrorType.SYSTEM_INNER_ERROR.getCode());
+		r.setMsg(BizErrorCode.SysErrorType.SYSTEM_INNER_ERROR.getDesc());
 		return r;
 	}
 }

@@ -17,10 +17,10 @@ import com.qihai.permission.service.AuthPermissionDimensionService;
 public class AuthPermissionDimensionServiceImpl extends ServiceImpl<AuthPermissionDimensionDao, AuthPermissionDimensionEntity> implements AuthPermissionDimensionService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,AuthPermissionDimensionEntity authPermissionDimension) {
         Page<AuthPermissionDimensionEntity> page = this.selectPage(
                 new Query<AuthPermissionDimensionEntity>(params).getPage(),
-                new EntityWrapper<AuthPermissionDimensionEntity>()
+                new EntityWrapper<AuthPermissionDimensionEntity>(authPermissionDimension)
         );
 
         return new PageUtils(page);

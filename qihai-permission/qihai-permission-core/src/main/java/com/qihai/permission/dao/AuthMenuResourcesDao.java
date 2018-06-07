@@ -1,5 +1,7 @@
 package com.qihai.permission.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.qihai.permission.entity.AuthMenuResourcesEntity;
@@ -14,5 +16,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface AuthMenuResourcesDao extends BaseMapper<AuthMenuResourcesEntity> {
+
+	List<AuthMenuResourcesEntity> listMenu(Long parentId);
 	
 }

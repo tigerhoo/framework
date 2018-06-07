@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.fastjson.JSON;
-import com.qihai.TUserTest;
+import com.qihai.commerce.framework.mq.TUserTest;
 import com.rabbitmq.client.Channel;
 
 /**
@@ -29,7 +29,7 @@ public class DirectAmqpConfiguration {
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames("TESTQUEUE");
+        container.setQueueNames("queneD");
         container.setMessageListener(listener());
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return container;

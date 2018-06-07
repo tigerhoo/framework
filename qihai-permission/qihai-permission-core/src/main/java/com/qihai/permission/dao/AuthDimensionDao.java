@@ -1,9 +1,11 @@
 package com.qihai.permission.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import com.qihai.permission.entity.AuthDimensionEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.qihai.permission.entity.AuthDimensionEntity;
 
 /**
  * 
@@ -14,5 +16,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface AuthDimensionDao extends BaseMapper<AuthDimensionEntity> {
+
+	List<AuthDimensionEntity> listAll();
 	
 }

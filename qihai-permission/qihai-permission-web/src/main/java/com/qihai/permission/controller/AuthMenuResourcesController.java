@@ -1,24 +1,22 @@
 package com.qihai.permission.controller;
 
 import java.util.Arrays;
-import java.util.Map;
-
-import com.qihai.commerce.framework.utils.ValidatorUtils;
+import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.qihai.commerce.framework.utils.R;
+import com.qihai.commerce.framework.utils.ValidatorUtils;
 import com.qihai.permission.entity.AuthMenuResourcesEntity;
 import com.qihai.permission.service.AuthMenuResourcesService;
-import com.qihai.R;
-import com.qihai.commerce.framework.utils.PageUtils;
-
-
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 
@@ -29,6 +27,7 @@ import com.qihai.commerce.framework.utils.PageUtils;
  */
 @RestController
 @RequestMapping("permission/authmenuresources")
+@Api("菜单管理")
 public class AuthMenuResourcesController {
     @Autowired
     private AuthMenuResourcesService authMenuResourcesService;
@@ -36,58 +35,71 @@ public class AuthMenuResourcesController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    @RequiresPermissions("permission:authmenuresources:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = authMenuResourcesService.queryPage(params);
-
-        return R.ok().put("page", page);
+    
+//    @PostMapping("/list")
+//    @RequiresPermissions("permission:authmenuresources:list")
+//    public R<PageUtils> list(@RequestParam Map<String, Object> params){
+//        PageUtils page = authMenuResourcesService.queryPage(params);
+//
+//        return new R<PageUtils>().ok(page);
+//    }
+    
+    
+    @ApiOperation(value="查询某个菜单下的子菜单",httpMethod="GET")
+    @ApiImplicitParam(name="parentId",value="父菜单id，如果不传，默认为0，即只查顶级菜单下的所有一级菜单",required=false,defaultValue="0",paramType="query",dataType="Long")
+    @GetMapping("listMenu")
+    public R<List<AuthMenuResourcesEntity>> listMenu(@RequestParam(defaultValue="0") Long parentId) {
+    	List<AuthMenuResourcesEntity> list=authMenuResourcesService.listMenu(parentId);
+    	return new R<List<AuthMenuResourcesEntity>>().ok(list);
     }
 
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    @RequiresPermissions("permission:authmenuresources:info")
-    public R info(@PathVariable("id") Long id){
-        AuthMenuResourcesEntity authMenuResources = authMenuResourcesService.selectById(id);
-
-        return R.ok().put("authMenuResources", authMenuResources);
-    }
+//    @GetMapping("/info/{id}")
+//    @RequiresPermissions("permission:authmenuresources:info")
+//    public R<AuthMenuResourcesEntity> info(@PathVariable("id") Long id){
+//        AuthMenuResourcesEntity authMenuResources = authMenuResourcesService.selectById(id);
+//
+//        return new R<AuthMenuResourcesEntity>().ok(authMenuResources);
+//    }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @ApiOperation(value="保存菜单信息",httpMethod="POST")
+    @PostMapping("/save")
     @RequiresPermissions("permission:authmenuresources:save")
-    public R save(@RequestBody AuthMenuResourcesEntity authMenuResources){
-        authMenuResourcesService.insert(authMenuResources);
+    public R<Object> save(@RequestBody AuthMenuResourcesEntity authMenuResources){
+        ValidatorUtils.validateEntity(authMenuResources);
+    	authMenuResourcesService.insert(authMenuResources);
 
-        return R.ok();
+        return new R<Object>().ok(null);
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @ApiOperation(value="更新菜单信息",httpMethod="POST")
+    @PostMapping("/update")
     @RequiresPermissions("permission:authmenuresources:update")
-    public R update(@RequestBody AuthMenuResourcesEntity authMenuResources){
+    public R<Object> update(@RequestBody AuthMenuResourcesEntity authMenuResources){
         ValidatorUtils.validateEntity(authMenuResources);
-        authMenuResourcesService.updateAllColumnById(authMenuResources);//全部更新
-        
-        return R.ok();
+        authMenuResourcesService.updateById(authMenuResources);//全部更新
+        return new R<Object>().ok(null);
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @ApiOperation(value="删除菜单信息",httpMethod="POST")
+    @ApiImplicitParam(name="ids",value="菜单主键ID列表",paramType="Long[]")
+    @PostMapping("/delete")
     @RequiresPermissions("permission:authmenuresources:delete")
-    public R delete(@RequestBody Long[] ids){
+    public R<Object> delete(@RequestBody Long[] ids){
         authMenuResourcesService.deleteBatchIds(Arrays.asList(ids));
-
-        return R.ok();
+        return new R<Object>().ok(null);
     }
 
 }
