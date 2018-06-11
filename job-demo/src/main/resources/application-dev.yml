@@ -1,0 +1,35 @@
+elasticjob:
+  #zk配置，其他参数请参照官网手册：http://elasticjob.io/docs/elastic-job-lite/02-guide/config-manual/
+  zk:
+    serverLists: 10.198.1.102:2181
+    namespace: testjob
+  
+  #job配置，其他参数请参照官网手册：http://elasticjob.io/docs/elastic-job-lite/02-guide/config-manual/
+  MySimpleJob:
+    cron: 0/10 * * * * ?
+    shardingItemParameters: 0=A  ##设置每个分片的参数
+    jobParameter: hehe               ##设置所有分片共用参数
+    shardingTotalCount: 1            ##分片总数
+    misfire: false                   ##是否开启错过任务重新执行，建议false
+    failover: false                  ##是否开启任务执行失效转移，开启表示如果作业在一次任务执行中途宕机，允许将该次未完成的任务在另一作业节点上补偿执行，建议false
+    eventTraceRdbDataSource: druiddatasource   ##任务执行数据库记录，不是很重要的job，建议不配
+    listener: com.qihai.job.listener.MyElasticJobListener  ##设置job执行前后的动作
+    overwrite: true   ##服务器启动时，是否重新把这些配置覆盖zookeeper里的配置。设置为true，且通过控制台在线修改过配置，请及时更新项目里的配置，否则下次重启会覆盖
+    disable: false    ##为true表示服务器启动时不执行job，在控制台操作启动
+  
+  #job配置 
+  MyDataflowJob:
+    streamingProcess: false  #是否流式处理数据，如果流式处理数据, 则fetchData不返回空结果将持续执行作业；如果非流式处理数据, 则处理数据完成后作业结束
+
+#job时间追踪数据源配置
+spring:
+  datasource:
+    druid:
+      log:
+        url: jdbc:mysql://10.198.1.102:3306/ejlog?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: Kye.0415
+        driver-class-name: com.mysql.jdbc.Driver
+        
+server:
+  port: 8084

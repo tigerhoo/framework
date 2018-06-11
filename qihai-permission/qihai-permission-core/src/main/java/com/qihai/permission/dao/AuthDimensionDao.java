@@ -17,6 +17,4 @@ import com.qihai.permission.entity.AuthDimensionEntity;
 @Mapper
 public interface AuthDimensionDao extends BaseMapper<AuthDimensionEntity> {
 
-	List<AuthDimensionEntity> listAll();
-	
 }

@@ -92,6 +92,7 @@ public class AuthGroupController {
 	 * 删除
 	 */
 	@ApiOperation(value = "删除用户组", httpMethod = "POST")
+	@ApiImplicitParam(name = "ids", value = "主键id数组", dataType = "Long[]", required = true)
 	@PostMapping("/delete")
 	@RequiresPermissions("permission:authgroup:delete")
 	public R<Object> delete(@RequestBody Long[] ids) {

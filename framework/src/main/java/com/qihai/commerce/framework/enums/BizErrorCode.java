@@ -14,7 +14,7 @@ public class BizErrorCode {
 	 * 
 	 */
 	public enum ReturnType {
-		IS_SUCCESS("1","成功"),
+		IS_SUCCESS("0","成功"),
 		IS_FAIL ("-1","失败");
 
 	    private String code;

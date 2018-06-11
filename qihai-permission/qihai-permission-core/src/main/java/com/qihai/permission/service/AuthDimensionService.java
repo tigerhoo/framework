@@ -3,8 +3,6 @@ package com.qihai.permission.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.permission.entity.AuthDimensionEntity;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +16,5 @@ public interface AuthDimensionService extends IService<AuthDimensionEntity> {
 
     PageUtils queryPage(Map<String, Object> params,AuthDimensionEntity authDimensiony);
 
-	List<AuthDimensionEntity> listAll();
 }
 

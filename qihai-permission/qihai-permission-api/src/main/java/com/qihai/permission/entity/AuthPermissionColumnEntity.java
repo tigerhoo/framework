@@ -1,13 +1,8 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import com.qihai.commerce.framework.entity.DataEntity;
-
-import java.util.Date;
 
 /**
  * 

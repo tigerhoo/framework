@@ -15,6 +15,6 @@ import java.util.Map;
  */
 public interface AuthRolePermissionColumnService extends IService<AuthRolePermissionColumnEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,AuthRolePermissionColumnEntity authRolePermissionColumn);
 }
 

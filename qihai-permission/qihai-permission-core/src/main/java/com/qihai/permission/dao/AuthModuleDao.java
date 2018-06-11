@@ -1,9 +1,12 @@
 package com.qihai.permission.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import com.qihai.permission.entity.AuthModuleEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.qihai.permission.dto.permission.AuthModuleDTO;
+import com.qihai.permission.entity.AuthModuleEntity;
 
 /**
  * 
@@ -14,5 +17,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @Mapper
 public interface AuthModuleDao extends BaseMapper<AuthModuleEntity> {
-	
+
+	List<AuthModuleDTO> listAll();
+
 }

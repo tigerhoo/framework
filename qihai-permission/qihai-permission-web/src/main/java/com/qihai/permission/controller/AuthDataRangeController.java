@@ -32,91 +32,85 @@ import io.swagger.annotations.ApiOperation;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
-@Api("数据范围")
+@Api("数据范围管理")
 @RestController
 @RequestMapping("permission/authdatarange")
 public class AuthDataRangeController {
-    @Autowired
-    private AuthDataRangeService authDataRangeService;
+	@Autowired
+	private AuthDataRangeService authDataRangeService;
 
-    /**
-     * 列表
-     */
-    @ApiOperation(value = "分页查询数据范围",httpMethod ="POST", response = AuthDataRangeEntity.class,notes = "返回查询结果集以及分页")
-    @ApiImplicitParam(name = "params", value = "分页请求参数，请放到请求url路径后用page=1&limit=10来表示请求第1页，每页显示10条，此值为默认", required = false)
-    @PostMapping("/list")
-    @RequiresPermissions("permission:authdatarange:list")
-    public R<PageUtils> list(@RequestParam Map<String, Object> params,@RequestBody(required=false) AuthDataRangeEntity authDataRange){
-        PageUtils page = authDataRangeService.queryPage(params,authDataRange);
+	/**
+	 * 列表
+	 */
+	@ApiOperation(value = "分页查询数据范围", httpMethod = "POST", response = AuthDataRangeEntity.class, notes = "返回查询结果集以及分页")
+	@ApiImplicitParam(name = "params", value = "分页请求参数，请放到请求url路径后用page=1&limit=10来表示请求第1页，每页显示10条，此值为默认", required = false)
+	@PostMapping("/list")
+	@RequiresPermissions("permission:authdatarange:list")
+	public R<PageUtils> list(@RequestParam Map<String, Object> params,
+			@RequestBody(required = false) AuthDataRangeEntity authDataRange) {
+		PageUtils page = authDataRangeService.queryPage(params, authDataRange);
 
-        return new R<PageUtils>().ok(page);
-    }
-    
-    @ApiOperation(value = "查询所有的数据范围",httpMethod ="GET", response = List.class,notes = "返回查询结果集以及分页")
-    @ApiImplicitParam(name = "params", value = "分页请求参数，请放到请求url路径后用page=1&limit=10来表示请求第1页，每页显示10条，此值为默认", required = false)
-    @GetMapping("/listAll")
-    @RequiresPermissions("permission:authdatarange:listAll")
-    public R<List<AuthDataRangeEntity>> listAll(){
-    	List<AuthDataRangeEntity> list = authDataRangeService.selectList(new EntityWrapper<>());
-        return new R<List<AuthDataRangeEntity>>().ok(list);
-    }
+		return new R<PageUtils>().ok(page);
+	}
 
-    /**
-     * 信息
-     */
-    @ApiOperation(value = "按id查询数据范围",httpMethod ="GET", response = R.class,notes = "返回查询结果集以及分页")
-    @ApiImplicitParam(name = "id", value = "数据范围的id",dataType="Long",paramType="path", required = true)
-    @GetMapping("/info/{id}")
-    @RequiresPermissions("permission:authdatarange:info")
-    public R<AuthDataRangeDTO> info(@PathVariable("id") Long id){
-    	
-    	//return new AuthDataRangeDTO();
-    	
-    	AuthDataRangeDTO authDataRangeDTO = authDataRangeService.selectDataRangeById(id);
+	@ApiOperation(value = "查询所有的数据范围", httpMethod = "POST", response = List.class, notes = "返回查询结果集以及分页")
+	@ApiImplicitParam(name = "params", value = "分页请求参数，请放到请求url路径后用page=1&limit=10来表示请求第1页，每页显示10条，此值为默认", required = false)
+	@PostMapping("/listAll")
+	@RequiresPermissions("permission:authdatarange:listAll")
+	public R<List<AuthDataRangeEntity>> listAll(@RequestBody(required=false) AuthDataRangeEntity authDataRange) {
+		List<AuthDataRangeEntity> list = authDataRangeService.selectList(new EntityWrapper<>(authDataRange));
+		return new R<List<AuthDataRangeEntity>>().ok(list);
+	}
 
-        return new R<AuthDataRangeDTO>().ok(authDataRangeDTO);
-    }
+	/**
+	 * 信息
+	 */
+	@ApiOperation(value = "按id查询数据范围", httpMethod = "GET", response = R.class, notes = "返回查询结果集以及分页")
+	@ApiImplicitParam(name = "id", value = "数据范围的id", dataType = "Long", paramType = "path", required = true)
+	@GetMapping("/info/{id}")
+	@RequiresPermissions("permission:authdatarange:info")
+	public R<AuthDataRangeDTO> info(@PathVariable("id") Long id) {
+		AuthDataRangeDTO authDataRangeDTO = authDataRangeService.selectDataRangeById(id);
+		return new R<AuthDataRangeDTO>().ok(authDataRangeDTO);
+	}
 
-    /**
-     * 保存
-     */
-    @ApiOperation(value = "添加数据范围或修改数据范围",httpMethod ="POST",response =R.class)
-    @PostMapping("/saveOrUpdate")
-    @RequiresPermissions("permission:authdatarange:save")
-    public R<Object> saveOrUpdate(@RequestBody AuthDataRangeDTO authDataRangeDTO){
-    	ValidatorUtils.validateEntity(authDataRangeDTO);
-        authDataRangeService.saveOrUpdate(authDataRangeDTO);
-        return new R<Object>().ok(null);
-    }
+	/**
+	 * 保存
+	 */
+	@ApiOperation(value = "添加数据范围或修改数据范围", httpMethod = "POST", response = R.class)
+	@PostMapping("/save")
+	@RequiresPermissions("permission:authdatarange:save")
+	public R<Object> save(@RequestBody AuthDataRangeDTO authDataRangeDTO) {
+		ValidatorUtils.validateEntity(authDataRangeDTO);
+		authDataRangeService.saveOrUpdate(authDataRangeDTO);
+		return new R<Object>().ok(null);
+	}
 
-	// /**
-	// * 修改
-	// */
-	// @ApiOperation(value = "修改数据范围",httpMethod ="POST",response =R.class)
-	// @PostMapping("/update")
-	// @RequiresPermissions("permission:authdatarange:update")
-	// public R<Object> update(@RequestBody AuthDataRangeEntity authDataRange){
-	// if(authDataRange==null||authDataRange.getId()==null) {
-	// throw new BaseException("修改时id为必传参数");
-	// }
-	// ValidatorUtils.validateEntity(authDataRange);
-	// authDataRangeService.updateById(authDataRange);
-	// return new R<Object>().ok(null);
-	// }
+	/**
+	 * 修改
+	 */
+	@ApiOperation(value = "修改数据范围", httpMethod = "POST", response = R.class)
+	@PostMapping("/update")
+	@RequiresPermissions("permission:authdatarange:update")
+	public R<Object> update(@RequestBody AuthDataRangeDTO authDataRangeDTO) {
+		ValidatorUtils.validateEntity(authDataRangeDTO);
+		authDataRangeService.saveOrUpdate(authDataRangeDTO);
+		return new R<Object>().ok(null);
+	}
 
-    /**
-     * 删除
-     */
-    @ApiOperation(value = "按id删除数据范围信息，逻辑删除",httpMethod ="POST",response=R.class)
-    @ApiImplicitParam(name = "ids", value = "数据范围ID数组，批量删除", required = true, dataType = "Long[]")
-    @PostMapping("/delete")
-    @RequiresPermissions("permission:authdatarange:delete")
-    public R<Object> delete(@RequestBody Long[] ids){
-    	if (ids == null || ids.length == 0) {
+	/**
+	 * 删除
+	 */
+	@ApiOperation(value = "按id删除数据范围信息，逻辑删除", httpMethod = "POST", response = R.class)
+	@ApiImplicitParam(name = "ids", value = "数据范围ID数组，批量删除", required = true, dataType = "Long[]")
+	@PostMapping("/delete")
+	@RequiresPermissions("permission:authdatarange:delete")
+	public R<Object> delete(@RequestBody Long[] ids) {
+		if (ids == null || ids.length == 0) {
 			throw new BaseException("请传入需要删除的数据的id");
 		}
-        authDataRangeService.deleteBatchIds(Arrays.asList(ids));
-        return new R<Object>().ok(null);
-    }
+		authDataRangeService.deleteBatchIds(Arrays.asList(ids));
+		return new R<Object>().ok(null);
+	}
 
 }

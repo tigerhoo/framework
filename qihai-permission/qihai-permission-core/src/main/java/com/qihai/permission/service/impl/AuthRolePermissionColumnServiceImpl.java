@@ -17,10 +17,10 @@ import com.qihai.permission.service.AuthRolePermissionColumnService;
 public class AuthRolePermissionColumnServiceImpl extends ServiceImpl<AuthRolePermissionColumnDao, AuthRolePermissionColumnEntity> implements AuthRolePermissionColumnService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params,AuthRolePermissionColumnEntity authRolePermissionColumn) {
         Page<AuthRolePermissionColumnEntity> page = this.selectPage(
                 new Query<AuthRolePermissionColumnEntity>(params).getPage(),
-                new EntityWrapper<AuthRolePermissionColumnEntity>()
+                new EntityWrapper<AuthRolePermissionColumnEntity>(authRolePermissionColumn)
         );
 
         return new PageUtils(page);

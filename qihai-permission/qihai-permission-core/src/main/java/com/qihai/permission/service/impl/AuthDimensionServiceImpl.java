@@ -32,10 +32,4 @@ public class AuthDimensionServiceImpl extends ServiceImpl<AuthDimensionDao, Auth
         return new PageUtils(page);
     }
 
-	@Override
-	public List<AuthDimensionEntity> listAll() {
-		List<AuthDimensionEntity> list = authDimensionDao.listAll();
-		return list;
-	}
-
 }

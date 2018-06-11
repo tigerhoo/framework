@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.qihai.commerce.framework.exception.BaseException;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.commerce.framework.utils.R;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiOperation;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
-@Api("维度定义")
+@Api("维度定义管理")
 @RestController
 @RequestMapping("permission/authdimension")
 public class AuthDimensionController {
@@ -51,16 +52,15 @@ public class AuthDimensionController {
 
 		return new R<PageUtils>().ok(page);
 	}
-	
-	
+
 	/**
 	 * 列表
 	 */
-	@ApiOperation(value = "查询所有维度", httpMethod = "GET", notes = "返回查询结果")
-	@GetMapping("/listAll")
+	@ApiOperation(value = "根据条件查询所有符合条件的维度", httpMethod = "GET", notes = "返回查询结果")
+	@PostMapping("/listAll")
 	@RequiresPermissions("permission:authdimension:listAll")
-	public R<List<AuthDimensionEntity>> listAll() {
-		List<AuthDimensionEntity> list =authDimensionService.listAll();
+	public R<List<AuthDimensionEntity>> listAll(@RequestBody(required = false) AuthDimensionEntity authDimension) {
+		List<AuthDimensionEntity> list = authDimensionService.selectList(new EntityWrapper<>(authDimension));
 		return new R<List<AuthDimensionEntity>>().ok(list);
 	}
 
@@ -106,7 +106,7 @@ public class AuthDimensionController {
 	 * 删除
 	 */
 	@ApiOperation(value = "按id删除维度，逻辑删除", httpMethod = "POST")
-    @ApiImplicitParam(name = "ids", value = "主键ID数组，批量删除", required = true, dataType = "Long[]")
+	@ApiImplicitParam(name = "ids", value = "主键ID数组，批量删除", required = true, dataType = "Long[]")
 	@PostMapping("/delete")
 	@RequiresPermissions("permission:authdimension:delete")
 	public R<Object> delete(@RequestBody Long[] ids) {

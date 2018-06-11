@@ -84,45 +84,11 @@
         <property name="filters" value="${dataSource.read.filters}" />
     </bean>
 
-    <bean id="slaveDataSource_1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <!-- 基本属性 url、user、password -->
-        <property name="url" value="${dataSource.read1.url}" />
-        <property name="username" value="${dataSource.read1.username}" />
-        <property name="password" value="${dataSource.read1.password}" />
-
-        <!-- 配置初始化大小、最小、最大 -->
-        <property name="initialSize" value="${dataSource.read1.initialSize}" />
-        <property name="minIdle" value="${dataSource.read1.minIdle}" />
-        <property name="maxActive" value="${dataSource.read1.maxActive}" />
-
-        <!-- 配置获取连接等待超时的时间 -->
-        <property name="maxWait" value="${dataSource.read1.maxWait}" />
-
-        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="${dataSource.read1.timeBetweenEvictionRunsMillis}" />
-
-        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-        <property name="minEvictableIdleTimeMillis" value="${dataSource.read1.minEvictableIdleTimeMillis}" />
-
-        <property name="validationQuery" value="${dataSource.read1.validationQuery}" />
-        <property name="testWhileIdle" value="${dataSource.read1.testWhileIdle}" />
-        <property name="testOnBorrow" value="${dataSource.read1.testOnBorrow}" />
-        <property name="testOnReturn" value="${dataSource.read1.testOnReturn}" />
-
-        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-        <property name="poolPreparedStatements" value="${dataSource.read1.poolPreparedStatements}" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="${dataSource.read1.maxPoolPreparedStatementPerConnectionSize}" />
-
-        <!-- 配置监控统计拦截的filters -->
-        <property name="filters" value="${dataSource.read1.filters}" />
-    </bean>
-
     <!-- 代理数据源 用来实现读写分离(也可实现数据库集群)  -->
     <bean id="dataSource" class="com.qihai.commerce.framework.datasource.DynamicDataSource">
         <property name="slavesDataSource">
             <list>
                 <ref bean="slaveDataSource"/>
-                <ref bean="slaveDataSource_1"/>
             </list>
         </property>
         <property name="masterDataSource" ref="masterDataSource"/>
@@ -130,21 +96,21 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="configLocation" value="classpath:config/application-plugins.xml" />
-        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="configLocation" value="${mybatis.spring.config.location}" />
+        <property name="mapperLocations" value="${mybatis.spring.mapper.locations}"/>
     </bean>
 
 	<bean id="transactionManager"
 		class="com.qihai.commerce.framework.datasource.manager.DynamicDataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
+	
 	<!-- 以 @Transactional 标注来定义事务 -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
-        <property name="basePackage" value="com.qihai.commerce.framework.dao"/>
+        <property name="basePackage" value="com.qihai.**.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 </beans>

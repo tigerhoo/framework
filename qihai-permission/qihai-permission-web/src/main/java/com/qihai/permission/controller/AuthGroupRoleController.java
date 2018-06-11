@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiOperation;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
-@Api("组与角色关联关系")
+@Api("组与角色关联管理")
 @RestController
 @RequestMapping("permission/authgrouprole")
 public class AuthGroupRoleController {

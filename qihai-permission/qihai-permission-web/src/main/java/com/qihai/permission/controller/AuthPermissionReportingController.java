@@ -92,16 +92,14 @@ public class AuthPermissionReportingController {
 	 * 删除
 	 */
     @ApiOperation(value = "删除资源，可批量删除",httpMethod ="POST")
-    @ApiImplicitParam(name="ids",value="主键id数组，可批量删除，格式为 {ids:[111,222,...]} ",required=true,dataType="Long[]")
+    @ApiImplicitParam(name="ids",value="主键id数组，可批量删除",required=true,dataType="Long[]")
 	@PostMapping("/delete")
 	@RequiresPermissions("permission:authpermissionreporting:delete")
-	public R<Object> delete(@RequestBody JSONObject jsonObject) {
-    	ArrayList ids = jsonObject.getObject("ids", ArrayList.class);
-    	if(ids==null||ids.size()==0) {
-    		throw new BaseException("请传入需要删除的数据的id数组");
-    	}
-		authPermissionReportingService.deleteBatchIds(ids);
-
+	public R<Object> delete(@RequestBody Long[] ids) {
+		if (ids == null || ids.length == 0) {
+			throw new BaseException("请传入需要删除的数据的id数组");
+		}
+		authPermissionReportingService.deleteBatchIds(Arrays.asList(ids));
 		return new R<Object>().ok(null);
 	}
 

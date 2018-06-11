@@ -21,10 +21,9 @@
         <result property="delFlag" column="del_flag"/>
         <result property="remarks" column="remarks"/>
     </resultMap>
-
-	<select id="listAll" resultMap="authDimensionMap">
-		select * from auth_dimension where del_flag=0
-	</select>
+    
+	<!-- <select id="listAll" resultMap="authDimensionMap"> select * from auth_dimension 
+		where del_flag=0 </select> -->
 	
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.qihai.permission.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,7 +19,10 @@ import com.qihai.commerce.framework.utils.R;
 import com.qihai.commerce.framework.exception.BaseException;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.commerce.framework.utils.ValidatorUtils;
+import com.qihai.permission.dto.permission.AuthModuleDTO;
+import com.qihai.permission.entity.AuthModuleEntity;
 import com.qihai.permission.entity.AuthRoleEntity;
+import com.qihai.permission.service.AuthModuleService;
 import com.qihai.permission.service.AuthRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,6 +41,9 @@ import io.swagger.annotations.ApiOperation;
 public class AuthRoleController {
 	@Autowired
 	private AuthRoleService authRoleService;
+	
+	@Autowired
+	private AuthModuleService authModuleService;
 
 	/**
 	 * 列表
@@ -110,5 +117,28 @@ public class AuthRoleController {
 			return new R<Object>().ok(null);
 		}
 	}
+
+	@ApiOperation(value = "角色关联权限", httpMethod = "GET")
+	//@ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "Long", paramType = "path")
+	@GetMapping("/attachPermission/{id}")
+	@RequiresPermissions("permission:authrole:attachPermission")
+	public R<List<AuthModuleEntity>> attachPermission() {
+		List<AuthModuleEntity> list = authModuleService
+				.selectList(new EntityWrapper<AuthModuleEntity>());
+		return new R<List<AuthModuleEntity>>().ok(list);
+	}
+	
+	
+	// @ApiOperation(value = "角色关联权限", httpMethod = "GET")
+	// @ApiImplicitParam(name = "id", value = "角色id", required = true, dataType =
+	// "Long", paramType = "path")
+	// @GetMapping("/attachPermission")
+	// @RequiresPermissions("permission:authrole:attachPermission")
+	// public R<List<AuthModuleDTO>> attachPermission(Long roleId, Long moduleId) {
+	// List<AuthModuleDTO> list = authRoleService.attachPermission(roleId,moduleId);
+	// return new R<List<AuthModuleDTO>>().ok(list);
+	//
+	// }
+	
 
 }

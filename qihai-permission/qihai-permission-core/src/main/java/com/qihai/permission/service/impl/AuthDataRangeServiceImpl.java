@@ -67,7 +67,7 @@ public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, Auth
 
 		List<AuthDimensionValueDTO> authDimensionValues = authDataRangeDTO.getAuthDimensionValue();
 		// 获取所有维度定义
-		List<AuthDimensionEntity> listAuthDimensions = authDimensionDao.listAll();
+		List<AuthDimensionEntity> listAuthDimensions = authDimensionDao.selectList(new EntityWrapper<AuthDimensionEntity>());
 		for (AuthDimensionEntity authDimensionEntity : listAuthDimensions) {
 			System.out.println(authDimensionEntity.getDimensionName());
 			AuthDimensionValueDTO authDimensionValueDTO = new AuthDimensionValueDTO();
@@ -125,6 +125,7 @@ public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, Auth
 		if (dataRangeId == null) {
 			// 添加数据范围
 			authDataRangeDao.insert(authDataRangeEntity);
+			dataRangeId=authDataRangeEntity.getId();
 		} else {
 			// 修改数据范围，先修改数据范围表，再解除关联关系（逻辑删除关联关系），再重新插入关联关系
 			authDataRangeEntity.setId(dataRangeId);

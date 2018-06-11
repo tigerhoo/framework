@@ -21,5 +21,7 @@
         <result property="remarks" column="remarks"/>
     </resultMap>
 
-
+	<select id="listAll" resultType="com.qihai.permission.dto.permission.AuthModuleDTO">
+		select id,module_name,description from auth_module where del_flag=0
+	</select>
 </mapper>

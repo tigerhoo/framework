@@ -2,6 +2,8 @@ package com.qihai.permission.controller;
 
 import java.util.Arrays;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +33,7 @@ import io.swagger.annotations.ApiOperation;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
-@Api(value="用户管理",description="")
+@Api(value="用户管理")
 @RestController
 @RequestMapping("permission/userinfo")
 public class UserInfoController {
@@ -72,6 +74,9 @@ public class UserInfoController {
 	@RequiresPermissions("permission:userinfo:save")
 	public R<Object> save(@RequestBody UserInfoEntity userInfo) {
 		ValidatorUtils.validateEntity(userInfo);
+		if(StringUtils.isBlank(userInfo.getPassword())) {
+			throw new BaseException("添加用户时，密码不可为空");
+		}
 		userInfoService.insert(userInfo);
 		return new R<Object>().ok(null);
 	}
@@ -83,10 +88,10 @@ public class UserInfoController {
 	@PostMapping("/update")
 	@RequiresPermissions("permission:userinfo:update")
 	public R<Object> update(@RequestBody UserInfoEntity userInfo) {
+		ValidatorUtils.validateEntity(userInfo);
 		if(userInfo==null||userInfo.getId()==null) {
     		throw new BaseException("修改时id为必传参数");
     	}
-		ValidatorUtils.validateEntity(userInfo);
 		userInfoService.updateById(userInfo);
 		return new R<Object>().ok(null);
 
@@ -108,7 +113,7 @@ public class UserInfoController {
 		}
 	}
 
-	@ApiOperation(value = "查询某个用户拥有的角色和数据范围(已关联角色)", httpMethod = "POST")
+	@ApiOperation(value = "查询某个用户拥有的角色和数据范围(已关联角色)", httpMethod = "GET")
 	@ApiImplicitParams(value = {
 			@ApiImplicitParam(name = "page", value = "请求第几页", dataType = "Long", paramType = "query", defaultValue = "1"),
 			@ApiImplicitParam(name = "limit", value = "每页多少行记录", dataType = "Long", paramType = "query", defaultValue = "10"),

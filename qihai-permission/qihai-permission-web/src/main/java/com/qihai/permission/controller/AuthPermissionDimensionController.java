@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
  * @email ${email}
  * @date 2018-05-29 09:05:48
  */
-@Api("资源维度")
+@Api("资源维度管理")
 @RestController
 @RequestMapping("permission/authpermissiondimension")
 public class AuthPermissionDimensionController {

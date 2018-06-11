@@ -2,8 +2,10 @@ package com.qihai.permission.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.qihai.commerce.framework.utils.PageUtils;
+import com.qihai.permission.dto.permission.AuthModuleDTO;
 import com.qihai.permission.entity.AuthModuleEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,8 @@ import java.util.Map;
 public interface AuthModuleService extends IService<AuthModuleEntity> {
 
 	PageUtils queryPage(Map<String, Object> params, AuthModuleEntity authModuleEntity);
+	
+	List<AuthModuleDTO> listAll();
+	
 }
 
