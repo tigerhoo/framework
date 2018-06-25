@@ -41,16 +41,18 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.maven.plugin.version}</version>
-			</plugin>
+			</plugin> -->
 
+			<!-- 将所有的依赖包打包成一个可运行的jar包 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!-- springboot应用入口类 -->
 					<mainClass>com.qihai.PermissionApplication</mainClass>
 				</configuration>
 				<executions>

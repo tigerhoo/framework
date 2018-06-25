@@ -34,8 +34,8 @@ public class RabbitMqConfig {
     @Value("${spring.rabbitmq.consumer.virtual-host}")
     private String virtualHost;
 
-    // 构建mq实例工厂
-    @Bean
+    // 构建mq实例工厂,bean指定name为了防止和mq producer的冲突,下同
+    @Bean(name="consumerConnectionFactory")
     public ConnectionFactory connectionFactory(){
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setAddresses(addresses);
@@ -46,19 +46,19 @@ public class RabbitMqConfig {
         return connectionFactory;
     }
 
-    @Bean
+    @Bean(name="consumerRabbitAdmin")
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory){
         return new RabbitAdmin(connectionFactory);
     }
 
-    @Bean
+    @Bean(name="consumerRabbitTemplate")
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public RabbitTemplate rabbitTemplate(){
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
         template.setMessageConverter(jackson2JsonMessageConverter());
         return template;
     }
-    @Bean
+    @Bean(name="consumerJackson2JsonMessageConverter")
     public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }

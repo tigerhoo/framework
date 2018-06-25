@@ -12,13 +12,13 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.commerce.framework.utils.Query;
 import com.qihai.permission.dao.AuthRoleDao;
-import com.qihai.permission.dto.permission.AuthMenuDTO;
+import com.qihai.permission.dto.permission.AuthPermissionDTO;
 import com.qihai.permission.dto.permission.AuthModuleDTO;
 import com.qihai.permission.dto.permission.AuthPermissionColumnDTO;
-import com.qihai.permission.entity.AuthMenuEntity;
+import com.qihai.permission.entity.AuthPermissionEntity;
 import com.qihai.permission.entity.AuthPermissionColumnEntity;
 import com.qihai.permission.entity.AuthRoleEntity;
-import com.qihai.permission.service.AuthMenuService;
+import com.qihai.permission.service.AuthPermissionService;
 import com.qihai.permission.service.AuthModuleService;
 import com.qihai.permission.service.AuthPermissionColumnService;
 import com.qihai.permission.service.AuthRoleService;
@@ -30,7 +30,7 @@ public class AuthRoleServiceImpl extends ServiceImpl<AuthRoleDao, AuthRoleEntity
 	private AuthModuleService authModuleService;
 
 	@Autowired
-	private AuthMenuService authMenuService;
+	private AuthPermissionService authMenuService;
 
 	@Autowired
 	private AuthPermissionColumnService authPermissionColumnService;
@@ -49,11 +49,11 @@ public class AuthRoleServiceImpl extends ServiceImpl<AuthRoleDao, AuthRoleEntity
 		List<AuthModuleDTO> authModules = authModuleService.listAll();
 		for (AuthModuleDTO authModuleDTO : authModules) {
 			Long authModuleId = authModuleDTO.getId();
-			List<AuthMenuDTO> authMenus = authModuleDTO.getAuthMenus();
-			List<AuthMenuEntity> authMenuEntitys = authMenuService.listByModuleId(authModuleId);
-			for (AuthMenuEntity authMenuEntity : authMenuEntitys) {
+			List<AuthPermissionDTO> authMenus = authModuleDTO.getAuthMenus();
+			List<AuthPermissionEntity> authMenuEntitys = authMenuService.listByModuleId(authModuleId);
+			for (AuthPermissionEntity authMenuEntity : authMenuEntitys) {
 				Long authMenuId = authMenuEntity.getId();
-				AuthMenuDTO authMenu = new AuthMenuDTO();
+				AuthPermissionDTO authMenu = new AuthPermissionDTO();
 				authMenu.setId(authMenuEntity.getId());
 				authMenu.setMenuName(authMenuEntity.getMenuName());
 				authMenu.setIsAuth(authMenuEntity.getIsAuth());

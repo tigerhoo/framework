@@ -1,9 +1,9 @@
 package com.qihai.permission.dto.permission;
 
-import io.swagger.annotations.ApiModel;
-import lombok.Data;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-@Data
+import io.swagger.annotations.ApiModel;
+
 @ApiModel("菜单列DTO模型")
 public class AuthPermissionColumnDTO {
 
@@ -18,4 +18,32 @@ public class AuthPermissionColumnDTO {
 	 */
 	private Boolean flag;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Boolean getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Boolean flag) {
+		this.flag = flag;
+	}
+
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this);
+	}
 }

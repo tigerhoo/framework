@@ -4,7 +4,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Lazy(false)
 public class SpringContextsUtil implements ApplicationContextAware {
+	
+	public static String applicationName = null;
+    public static String applicationAbbr = null;
 
     private static ApplicationContext applicationContext;    //Spring应用上下文环境
     /**
@@ -25,7 +30,9 @@ public class SpringContextsUtil implements ApplicationContextAware {
      * @throws org.springframework.beans.BeansException
      */
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringContextsUtil.applicationContext = applicationContext;
+    	applicationName = applicationContext.getId();
+    	SpringContextsUtil.applicationContext = applicationContext;
+    	applicationAbbr = getProperty("spring.application.abbr", applicationName);
     }
 
     /**
@@ -98,5 +105,25 @@ public class SpringContextsUtil implements ApplicationContextAware {
 
     public static Object getBean(Class clazz) {
         return  applicationContext.getBean(clazz);
+    }
+    
+    public static void publishEvent(ApplicationEvent event) {
+        if (applicationContext != null) {
+        	applicationContext.publishEvent(event);
+        }
+    }
+    
+    public static String getProperty(String key) {
+        return getProperty(key, "");
+    }
+
+    public static String getProperty(String key, String defaultValue) {
+        String result = defaultValue;
+        Environment environment = (Environment)getBean(Environment.class);
+        if (environment != null) {
+            result = environment.getProperty(key, defaultValue);
+        }
+
+        return result;
     }
 }

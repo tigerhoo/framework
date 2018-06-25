@@ -1,0 +1,13 @@
+redis:
+  password: 
+  pool:
+      maxActive: 300
+      maxWait: 5000
+      maxIdle: 100
+      minIdle: 10
+      testOnBorrow: true
+  sentinel:
+      ips: 10.198.1.103:26379 
+  master:
+      name: mymaster     
+       

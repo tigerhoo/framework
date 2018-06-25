@@ -15,6 +15,6 @@ import java.util.Map;
  */
 public interface AuthGroupRoleService extends IService<AuthGroupRoleEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params,AuthGroupRoleEntity authGroupRole);
 }
 

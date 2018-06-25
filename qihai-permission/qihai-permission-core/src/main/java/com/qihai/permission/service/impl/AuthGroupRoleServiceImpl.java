@@ -12,18 +12,16 @@ import com.qihai.permission.dao.AuthGroupRoleDao;
 import com.qihai.permission.entity.AuthGroupRoleEntity;
 import com.qihai.permission.service.AuthGroupRoleService;
 
-
 @Service("authGroupRoleService")
-public class AuthGroupRoleServiceImpl extends ServiceImpl<AuthGroupRoleDao, AuthGroupRoleEntity> implements AuthGroupRoleService {
+public class AuthGroupRoleServiceImpl extends ServiceImpl<AuthGroupRoleDao, AuthGroupRoleEntity>
+		implements AuthGroupRoleService {
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        Page<AuthGroupRoleEntity> page = this.selectPage(
-                new Query<AuthGroupRoleEntity>(params).getPage(),
-                new EntityWrapper<AuthGroupRoleEntity>()
-        );
+	@Override
+	public PageUtils queryPage(Map<String, Object> params, AuthGroupRoleEntity authGroupRole) {
+		Page<AuthGroupRoleEntity> page = this.selectPage(new Query<AuthGroupRoleEntity>(params).getPage(),
+				new EntityWrapper<AuthGroupRoleEntity>(authGroupRole));
 
-        return new PageUtils(page);
-    }
+		return new PageUtils(page);
+	}
 
 }

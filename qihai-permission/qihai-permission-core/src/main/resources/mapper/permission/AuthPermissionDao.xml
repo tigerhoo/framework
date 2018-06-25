@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qihai.permission.dao.AuthPermissionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+	<resultMap
+		type="com.qihai.permission.entity.AuthPermissionEntity"
+		id="authPermissionMap">
+		<result property="id" column="id" />
+		<result property="menuName" column="menu_name" />
+		<result property="parentId" column="parent_id" />
+		<result property="moduleId" column="module_id" />
+		<result property="url" column="url" />
+		<result property="categoryCode" column="category_code" />
+		<result property="methodCode" column="method_code" />
+		<result property="description" column="description" />
+		<result property="serviceCode" column="service_code" />
+		<result property="isLocked" column="is_locked" />
+		<result property="isAuth" column="is_auth" />
+		<result property="isPublic" column="is_public" />
+		<result property="privilege" column="privilege" />
+		<result property="menuMapping" column="menu_mapping" />
+		<result property="enabledFlag" column="enabled_flag" />
+		<result property="traceId" column="trace_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createTime" column="create_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="version" column="version" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+
+	<select id="listUserPermissionByRoleIds"
+		resultType="com.qihai.permission.dto.menu.AuthUserPermissionDTO">
+		SELECT
+		ap.id,
+		ap.menu_name,
+		ap.module_id,
+		ap.method_code,
+		ap.url,
+		ap.category_code,
+		ap.service_code,
+		ap.is_locked,
+		ap.is_public,
+		ap.is_auth,
+		ap.privilege,
+		am.module_name
+		FROM
+		auth_role_permission arp,
+		auth_permission ap,
+		auth_module am
+		WHERE arp.permission_id = ap.id
+		and
+		ap.module_id=am.id
+		and am.del_flag=0
+		and arp.del_flag=0
+		and ap.del_flag=0
+		AND arp.role_id IN
+		<foreach collection="roleIds" item="roleId" open="("
+			separator="," close=")">
+			#{roleId}
+		</foreach>
+	</select>
+
+
+	<select id="selectPermission"
+		resultType="com.qihai.permission.dto.permission.AuthPermissionModuleDTO">
+		SELECT
+		b.id,
+		b.menu_name,
+		concat(a.service_code,'--',a.module_name) as
+		module_name,
+		b.url,
+		b.description,
+		b.service_code,
+		b.menu_mapping,
+		b.remarks
+		FROM
+		auth_module
+		a,
+		auth_permission b
+		WHERE
+		a.id = b.module_id
+		AND
+		a.del_flag =0
+		AND
+		b.del_flag = 0
+		<if test="menuName!=null and menuName!=''">
+			and menu_name=#{menuName}
+		</if>
+	</select>
+
+
+	<select id="listUserAllPermission"
+		resultType="com.qihai.permission.entity.AuthPermissionEntity">
+		<!-- 查询菜单下面有哪些按钮 -->
+		SELECT
+		*
+		FROM
+		auth_permission c
+		WHERE
+		c.module_id = (
+		SELECT
+		b.module_id
+		FROM
+		auth_menu a,
+		auth_permission b
+		WHERE
+		a.auth_permission_id = b.id
+		AND
+		a.del_flag = 0
+		AND b.del_flag = 0
+		AND a.id = #{authMenuId}
+		)
+		AND EXISTS (
+		SELECT
+		1
+		FROM
+		auth_role_permission d
+		WHERE
+		d.permission_id = c.id
+		AND
+		d.role_id IN
+		<foreach collection="roleIds" item="roleId" open="("
+			separator="," close=")">
+			#{roleId}
+		</foreach>
+		)
+		and c.del_flag=0
+	</select>
+
+</mapper>

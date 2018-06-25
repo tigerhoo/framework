@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.qihai.commerce.framework.dao.RealtorAdminMapper" >
-  <resultMap id="BaseResultMap" type="com.qihai.commerce.framework.domain.RealtorAdmin" >
+<mapper namespace="com.qihai.commerce.framework.datasource.test.dao.RealtorAdminMapper" >
+  <resultMap id="BaseResultMap" type="com.qihai.commerce.framework.datasource.test.domain.RealtorAdmin" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
@@ -33,7 +33,7 @@
     delete from realtor_admin
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.qihai.commerce.framework.domain.RealtorAdmin" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.qihai.commerce.framework.datasource.test.domain.RealtorAdmin" useGeneratedKeys="true" keyProperty="id">
     insert into realtor_admin (id, username, password, 
       type, company_id, company_name, 
       store_id, status, contact_name, 
@@ -47,7 +47,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, 
       #{version,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.qihai.commerce.framework.domain.RealtorAdmin" >
+  <insert id="insertSelective" parameterType="com.qihai.commerce.framework.datasource.test.domain.RealtorAdmin" >
     insert into realtor_admin
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -150,7 +150,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qihai.commerce.framework.domain.RealtorAdmin" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.qihai.commerce.framework.datasource.test.domain.RealtorAdmin" >
     update realtor_admin
     <set >
       <if test="username != null" >
@@ -201,7 +201,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qihai.commerce.framework.domain.RealtorAdmin" >
+  <update id="updateByPrimaryKey" parameterType="com.qihai.commerce.framework.datasource.test.domain.RealtorAdmin" >
     update realtor_admin
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

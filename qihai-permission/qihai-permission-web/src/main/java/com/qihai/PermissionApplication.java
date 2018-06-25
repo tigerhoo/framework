@@ -8,7 +8,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 
 @SpringBootApplication
-//@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy
 public class PermissionApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

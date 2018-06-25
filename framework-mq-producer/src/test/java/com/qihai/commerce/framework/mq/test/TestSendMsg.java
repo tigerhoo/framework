@@ -3,10 +3,11 @@ package com.qihai.commerce.framework.mq.test;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import com.qihai.commerce.framework.mq.Application;
 import com.qihai.commerce.framework.mq.producer.RabbitMqSender;
 
 
@@ -15,9 +16,9 @@ import com.qihai.commerce.framework.mq.producer.RabbitMqSender;
  * @author zhuguojin
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration
 public class TestSendMsg {
 
 	@Autowired

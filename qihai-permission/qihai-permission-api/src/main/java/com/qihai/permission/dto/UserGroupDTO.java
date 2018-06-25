@@ -1,5 +1,7 @@
 package com.qihai.permission.dto;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -12,10 +14,10 @@ public class UserGroupDTO {
 	private String userName;
 
 	/**
-	 * 手机号
+	 * 登录账号
 	 */
-	@ApiModelProperty(value = "手机号", name = "mobile")
-	private String mobile;
+	@ApiModelProperty(value = "登录账号", name = "loginName")
+	private String loginName;
 
 	/**
 	 * 用户类型(C:用户,B:管理员,S:运营)
@@ -57,12 +59,12 @@ public class UserGroupDTO {
 		this.userName = userName;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public String getType() {
@@ -97,4 +99,8 @@ public class UserGroupDTO {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this);
+	}
 }

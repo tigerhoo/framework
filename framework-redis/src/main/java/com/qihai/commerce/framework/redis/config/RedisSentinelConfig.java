@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
@@ -84,6 +85,7 @@ public class RedisSentinelConfig {
     	return jedisConnectionFactory;
     }
 
+    @Lazy(true)
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
     

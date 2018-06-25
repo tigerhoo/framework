@@ -41,6 +41,13 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
+		<!-- framework-security -->
+		<dependency>
+			<groupId>com.qihai.framework.security</groupId>
+			<artifactId>framework-security</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -64,7 +71,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<!-- 设置编译版本为1.8 -->
 			<plugin>

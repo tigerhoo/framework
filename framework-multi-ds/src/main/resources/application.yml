@@ -1,0 +1,78 @@
+#mybatis.spring.base.package=com.qihai.commerce.framework.dao
+
+mybatis:
+     spring:
+         config:
+              location: classpath:config/application-plugins.xml
+         mapper:
+              #扫描Mapping.xml文件
+              locations: classpath:mapper/*.xml
+
+dataSource:
+     write:
+         #数据库地址
+         url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+         #数据库用户名
+         username: root
+         #数据库密码
+         password: root
+         #初始多少个连接
+         initialSize: 10
+         #最小多少个连接
+         minIdle: 10
+         #最大多少个连接
+         maxActive: 200
+         #超时等待时间(毫秒)
+         maxWait: 60000
+         #间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+         timeBetweenEvictionRunsMillis: 50000
+         #一个连接在池中最小生存的时间，单位是毫秒
+         minEvictableIdleTimeMillis: 300000
+         #监控统计拦截的filters
+         filters: stat
+         #验证连接有效性的SQL
+         validationQuery: SELECT 1
+         #测试空闲连接
+         testWhileIdle: true
+         #获取连接验证
+         testOnBorrow: false
+         #连接放回连接池验证
+         testOnReturn: false
+         #是否打开PSCache
+         poolPreparedStatements: true
+         #PSCache 大小
+         maxPoolPreparedStatementPerConnectionSize: 20
+     read: 
+         #数据库地址
+         url: jdbc:mysql://127.0.0.1:3306/test_read?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+         #数据库用户名
+         username: root
+         #数据库密码
+         password: root
+         #初始多少个连接
+         initialSize: 10
+         #最小多少个连接
+         minIdle: 10
+         #最大多少个连接
+         maxActive: 200
+         #超时等待时间(毫秒)
+         maxWait: 60000
+         #间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+         timeBetweenEvictionRunsMillis: 50000
+         #一个连接在池中最小生存的时间，单位是毫秒
+         minEvictableIdleTimeMillis: 300000
+         #监控统计拦截的filters
+         filters: stat
+         #验证连接有效性的SQL
+         validationQuery: SELECT 1
+         #测试空闲连接
+         testWhileIdle: true
+         #获取连接验证
+         testOnBorrow: false
+         #连接放回连接池验证
+         testOnReturn: false
+         #是否打开PSCache
+         poolPreparedStatements: true
+         #PSCache 大小
+         maxPoolPreparedStatementPerConnectionSize: 20
+

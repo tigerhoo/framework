@@ -3,7 +3,8 @@ package com.qihai.permission.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.commerce.framework.utils.R;
-import com.qihai.permission.dto.permission.AuthMenuDTO;
+import com.qihai.permission.dto.permission.AuthPermissionDTO;
+import com.qihai.permission.dto.permission.AuthRolePermissionDTO;
 import com.qihai.permission.dto.permission.AuthModuleDTO;
 import com.qihai.permission.dto.permission.AuthPermissionColumnDTO;
 import com.qihai.permission.entity.AuthRolePermissionColumnEntity;
@@ -27,11 +28,13 @@ public interface AuthRolePermissionService extends IService<AuthRolePermissionEn
 
     PageUtils queryPage(Map<String, Object> params,AuthRolePermissionEntity authRolePermission);
 
-	List<AuthMenuDTO> listRolePermission(Long roleId, Long moduleId);
+	List<AuthPermissionDTO> listRolePermission(Long roleId, Long moduleId);
 
 	List<AuthPermissionColumnDTO> listPermissionColumns(Long roleId, Long moduleId, Long permissionId);
 	
-	void saveRolePermission(Long roleId, List<AuthModuleDTO> authModules);
+	//void saveRolePermission(Long roleId, List<AuthModuleDTO> authModules);
+
+	void saveOrUpdate(AuthRolePermissionDTO rolePermission);
 	
 }
 

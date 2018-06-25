@@ -25,8 +25,9 @@
 		<result property="remarks" column="remarks" />
 	</resultMap>
 
-	<resultMap type="com.qihai.permission.dto.UserRoleDTO" id="userRole">
-		<result property="id" column="id"/>
+	<resultMap type="com.qihai.permission.dto.UserRoleDTO"
+		id="userRole">
+		<result property="id" column="id" />
 		<result property="roleCode" column="role_code" />
 		<result property="roleName" column="role_name" />
 		<result property="dataRangeName" column="data_range_name" />
@@ -35,23 +36,44 @@
 
 	<select id="listUserRole" resultMap="userRole">
 		SELECT
-			b.id,
-			d.role_code,
-			d.role_name,
-			c.data_range_name,
-			b.create_time
+		b.id,
+		d.role_code,
+		d.role_name,
+		c.data_range_name,
+		b.create_time
 		FROM
-			user_info a,
-			auth_user_role b,
-			auth_data_range c,
-			auth_role d
+		user_info a,
+		auth_user_role b,
+		auth_data_range c,
+		auth_role d
 		WHERE
 		b.user_id = a.id
+		and a.del_flag=0
+		and b.del_flag=0
+		and c.del_flag=0
+		and
+		d.del_flag=0
 		AND b.data_range_id = c.id
 		AND b.role_id = d.id
 		<if test="userId!=null">
 			and b.user_id=#{userId}
 		</if>
 	</select>
-	
+
+	<select id="listUserInfo"
+		resultType="com.qihai.permission.vo.UserInfoVO">
+		select
+		id,user_name,login_name,status,regist_time,create_time,update_time,created_by,updated_by
+		from
+		user_info a
+		where a.del_flag=0
+		<if test="userName!=null and userName!=''">
+			and user_name=#{userName}
+		</if>
+		<if test="loginName!=null and loginName!=''">
+			and login_name=#{loginName}
+		</if>
+
+	</select>
+
 </mapper>

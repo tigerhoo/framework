@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qihai.sms.modules.sso.dao.UserInfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.qihai.commerce.framework.vo.UserResources" id="userResourcesMap">
+        <result property="serviceCode" column="service_code"/>
+        <result property="url" column="url"/>
+        <result property="method" column="method_code"/>
+    </resultMap>
+	
+    <!-- 根据用户ID查询菜单 
+    <select id="getMenuListByUser" parameterType="String" resultType="map">
+		SELECT
+			o.*
+		FROM
+			auth_permission o
+		JOIN auth_role_permission arp ON o.id = arp.permission_id
+		JOIN auth_role ar ON ar.id = arp.role_id
+		JOIN auth_user_role aur ON aur.role_id = ar.id
+		JOIN user_info ui ON ui.id = aur.user_id
+		AND ui.id = #{_parameter}
+    </select>-->
+    
+    <!-- 根据用户ID查询菜单 
+    <select id="getMenuListByUser" parameterType="String" resultType="map">
+		SELECT
+			o.*
+		FROM
+			auth_permission o
+		JOIN auth_role_permission arp ON o.id = arp.permission_id
+		JOIN auth_role ar ON ar.id = arp.role_id
+		JOIN auth_group_role agr ON agr.role_id = ar.id
+		JOIN auth_group ag ON ag.id = agr.group_id
+		JOIN auth_user_group aug ON aug.group_id = ag.id
+		JOIN user_info ui ON ui.id = aug.user_id
+		AND ui.id = 4975140289935036;
+    </select>-->
+    
+    <select id="getUerRoles" resultType="java.lang.Long" >
+		select role_id from auth_user_role where user_id = #{userId} and del_flag = 0
+    </select>
+
+    <select id="getUserGroupRoles" resultType="java.lang.Long" >
+		SELECT gr.role_id
+		FROM auth_user_group ug, auth_group_role gr
+		WHERE ug.group_id = gr.group_id
+		AND ug.user_id = #{userId}
+		 /*AND gr.del_flag = 0*/
+		 /*AND ug.del_flag = 0*/
+    </select>
+    
+    <!-- 根据用户ID获取所有的角色ID 
+    <select id="selectRolesByUserId" parameterType="java.lang.Long">
+        SELECT
+			/*user_info.id AS user_id,*/
+			auth_user_role.role_id AS role_id
+		FROM
+			user_info,
+			auth_user_role
+		WHERE
+			user_info.id = auth_user_role.user_id
+		/*AND user_info.del_flag = 0*/
+		/*AND auth_user_role.del_flag = 0*/
+		AND user_info.id = #{userId}
+		UNION
+		SELECT
+			user_info.id AS user_id,
+			auth_group_role.role_id AS role_id
+		FROM
+			user_info,
+			auth_user_group,
+			auth_group_role
+		WHERE
+			user_info.id = auth_user_group.user_id
+		AND auth_user_group.group_id = auth_group_role.group_id
+		/*AND user_info.del_flag = 0*/
+		/*AND auth_user_group.del_flag = 0*/
+		/*AND auth_group_role.del_flag = 0*/
+		AND user_info.id = #{userId};
+    </select>-->
+    
+    <select id="selectPermissionByRoleIds" parameterType="java.lang.Object" resultMap="userResourcesMap">
+        SELECT
+            auth_permission.service_code,
+            auth_permission.url,
+            auth_permission.method_code
+        FROM
+            auth_role_permission,
+			auth_permission
+        WHERE auth_role_permission.permission_id = auth_permission.id
+			AND auth_role_permission.del_flag = 0
+			AND auth_permission.del_flag = 0
+			AND auth_role_permission.role_id IN
+            <foreach collection="array" item="roleId" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+    </select>
+
+</mapper>

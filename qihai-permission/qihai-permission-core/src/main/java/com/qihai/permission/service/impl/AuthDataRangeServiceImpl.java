@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,11 +32,10 @@ import com.qihai.permission.service.AuthDataRangeService;
 public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, AuthDataRangeEntity>
 		implements AuthDataRangeService {
 
-	@Autowired
-	private AuthDimensionDao authDimensionDao;
+	private static final Logger logger = LoggerFactory.getLogger(AuthDataRangeServiceImpl.class);
 
 	@Autowired
-	private AuthDataRangeDao authDataRangeDao;
+	private AuthDimensionDao authDimensionDao;
 
 	@Autowired
 	private AuthDimensionValueDao authDimensionValueDao;
@@ -44,6 +45,7 @@ public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, Auth
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params, AuthDataRangeEntity authDataRange) {
+		logger.debug("分页查询数据范围");
 		Page<AuthDataRangeEntity> page = this.selectPage(new Query<AuthDataRangeEntity>(params).getPage(),
 				new EntityWrapper<AuthDataRangeEntity>(authDataRange));
 
@@ -59,7 +61,9 @@ public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, Auth
 
 	@Override
 	public AuthDataRangeDTO selectDataRangeById(Long id) {
-		AuthDataRangeEntity dataRangeEntity = authDataRangeDao.selectById(id);
+		// 根据主键查询数据范围
+		logger.debug("根据主键查询数据范围");
+		AuthDataRangeEntity dataRangeEntity = this.selectById(id);
 		AuthDataRangeDTO authDataRangeDTO = new AuthDataRangeDTO();
 		authDataRangeDTO.setId(dataRangeEntity.getId());
 		authDataRangeDTO.setDataRangeName(dataRangeEntity.getDataRangeName());
@@ -67,9 +71,9 @@ public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, Auth
 
 		List<AuthDimensionValueDTO> authDimensionValues = authDataRangeDTO.getAuthDimensionValue();
 		// 获取所有维度定义
-		List<AuthDimensionEntity> listAuthDimensions = authDimensionDao.selectList(new EntityWrapper<AuthDimensionEntity>());
+		List<AuthDimensionEntity> listAuthDimensions = authDimensionDao
+				.selectList(new EntityWrapper<AuthDimensionEntity>());
 		for (AuthDimensionEntity authDimensionEntity : listAuthDimensions) {
-			System.out.println(authDimensionEntity.getDimensionName());
 			AuthDimensionValueDTO authDimensionValueDTO = new AuthDimensionValueDTO();
 			authDimensionValueDTO.setAuthDimensionId(authDimensionEntity.getId());
 			authDimensionValueDTO.setDimensionName(authDimensionEntity.getDimensionName());
@@ -124,13 +128,13 @@ public class AuthDataRangeServiceImpl extends ServiceImpl<AuthDataRangeDao, Auth
 		authDataRangeEntity.setDescription(authDataRangeDTO.getDescription());
 		if (dataRangeId == null) {
 			// 添加数据范围
-			authDataRangeDao.insert(authDataRangeEntity);
-			dataRangeId=authDataRangeEntity.getId();
+			this.insert(authDataRangeEntity);
+			dataRangeId = authDataRangeEntity.getId();
 		} else {
 			// 修改数据范围，先修改数据范围表，再解除关联关系（逻辑删除关联关系），再重新插入关联关系
 			authDataRangeEntity.setId(dataRangeId);
 			// 修改数据范围表
-			authDataRangeDao.updateById(authDataRangeEntity);
+			this.updateById(authDataRangeEntity);
 			// 逻辑删除关联关系表
 			relieveDataRangeDimessionRelation(dataRangeId);
 		}

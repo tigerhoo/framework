@@ -10,7 +10,6 @@
 		<result property="groupName" column="group_name" />
 		<result property="groupCode" column="group_code" />
 		<result property="categoryCode" column="category_code" />
-		<result property="enabledFlag" column="enabled_flag" />
 		<result property="traceId" column="trace_id" />
 		<result property="createdBy" column="created_by" />
 		<result property="createTime" column="create_time" />
@@ -26,7 +25,7 @@
 		a.id,
 		b.created_by,
 		b.user_name,
-		b.mobile,
+		b.login_name,
 		b.status,
 		b.type,
 		b.updated_by
@@ -37,6 +36,8 @@
 		a.user_id =
 		b.id
 		and a.group_id=#{groupId}
+		and a.del_flag=0
+		and b.del_flag=0
 	</select>
 
 
@@ -55,6 +56,9 @@
 		WHERE
 			b.data_range_id = c.id
 			AND b.role_id = d.id
+			and b.del_flag=0
+			and c.del_flag=0
+			and d.del_flag=0
 			AND b.group_id = #{groupId}
 	</select>
 

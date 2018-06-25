@@ -3,8 +3,8 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://10.198.1.102:3306/permission?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-        #url: jdbc:mysql://localhost:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        #url: jdbc:mysql://10.198.1.102:3306/permission?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://10.198.1.102:3306/permission_test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
         username: root
         password: Kye.0415
         #password: root
@@ -34,4 +34,28 @@ spring:
         version: 1.0.0 
     ## rabbit mq properties
     #rabbitmq:
-                              
+redis:
+  password: 
+  pool:
+      maxActive: 300
+      maxWait: 5000
+      maxIdle: 100
+      minIdle: 10
+      testOnBorrow: true
+  sentinel:
+      ips: 10.198.1.103:26379 
+  master:
+      name: mymaster 
+ 
+ 
+#web端用户会话刷新cron表达式
+scheduled:
+  sync:
+    session:
+      cron: 0 0/30 * * * *
+#web端用户会话过期时间，单位是秒
+webuser:
+  session:
+    timeout: 72000
+    
+salt: fa690ab5658c40889f0e732689bd8411

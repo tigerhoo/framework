@@ -4,31 +4,87 @@
 <mapper namespace="com.qihai.permission.dao.AuthMenuDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.qihai.permission.entity.AuthMenuEntity" id="authMenuMap">
-        <result property="id" column="id"/>
-        <result property="menuName" column="menu_name"/>
-        <result property="parentId" column="parent_id"/>
-        <result property="moduleId" column="module_id"/>
-        <result property="url" column="url"/>
-        <result property="categoryCode" column="category_code"/>
-        <result property="methodCode" column="method_code"/>
-        <result property="description" column="description"/>
-        <result property="serviceCode" column="service_code"/>
-        <result property="isLocked" column="is_locked"/>
-        <result property="isAuth" column="is_auth"/>
-        <result property="isPublic" column="is_public"/>
-        <result property="privilege" column="privilege"/>
-        <result property="menuMapping" column="menu_mapping"/>
-        <result property="enabledFlag" column="enabled_flag"/>
-        <result property="traceId" column="trace_id"/>
-        <result property="createdBy" column="created_by"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updatedBy" column="updated_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="version" column="version"/>
-        <result property="delFlag" column="del_flag"/>
-        <result property="remarks" column="remarks"/>
-    </resultMap>
+	<resultMap type="com.qihai.permission.entity.AuthMenuEntity"
+		id="authMenuResourcesMap">
+		<result property="id" column="id" />
+		<result property="menuCode" column="menu_code" />
+		<result property="menuTitle" column="menu_title" />
+		<result property="parentId" column="parent_id" />
+		<result property="menuIcon" column="menu_icon" />
+		<result property="menuPath" column="menu_path" />
+		<result property="menuType" column="menu_type" />
+		<result property="displaySequence" column="display_sequence" />
+		<result property="description" column="description" />
+		<result property="component" column="component" />
+		<result property="authMenuId" column="auth_menu_id" />
+		<result property="displayFlag" column="display_flag" />
+		<result property="enabledFlag" column="enabled_flag" />
+		<result property="traceId" column="trace_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createTime" column="create_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+	<sql id="BaseTable">
+		auth_menu
+	</sql>
 
+
+	<!-- 查询所有有效菜单(del_flag=0为有效) -->
+	<select id="listMenu"
+		resultType="com.qihai.permission.entity.AuthMenuEntity">
+		SELECT
+		*
+		FROM
+		auth_menu a
+		WHERE
+		a.del_flag = 0
+		AND a.parent_id =
+		#{parentId}
+		ORDER BY
+		a.display_sequence
+	</select>
+
+
+	<select id="listMenusByRoleIds" resultMap="authMenuResourcesMap">
+		<!-- 添加distinct是因为可能同一个菜单被多个角色关联过，去除重复 -->
+		SELECT distinct
+		mr.id,
+		mr.menu_code,
+		mr.menu_title,
+		mr.parent_id,
+		mr.menu_icon,
+		mr.menu_path,
+		mr.menu_type,
+		mr.display_sequence,
+		mr.description,
+		mr.component,
+		mr.auth_permission_id,
+		mr.display_flag,
+		mr.created_by,
+		mr.create_time,
+		mr.updated_by,
+		mr.update_time
+		FROM
+		<include refid="BaseTable" />
+		mr
+		LEFT JOIN auth_role_permission rp on rp.permission_id =
+		mr.auth_permission_id and rp.del_flag = 0
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			mr.del_flag = 0
+			AND (
+			mr.auth_permission_id IS NULL or
+			mr.auth_permission_id = 0
+			OR rp.role_id IN
+			<foreach collection="roleIds" item="roleId" open="("
+				separator="," close=")">
+				#{roleId}
+			</foreach>
+			)
+		</trim>
+		order by mr.display_sequence asc
+	</select>
 
 </mapper>

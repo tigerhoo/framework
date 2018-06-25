@@ -122,9 +122,12 @@ public class RedisUtils {
      * @param value
      */
     @SuppressWarnings("unchecked")
-	public void hmSet(String key, Object hashKey, Object value){
+	public void hmSet(String key, Object hashKey, Object value, Long expireTime){
         HashOperations<String, Object, Object>  hash = redisTemplate.opsForHash();
         hash.put(key,hashKey,value);
+        if (expireTime != null) {
+           redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        }
     }
 
     /**
@@ -145,9 +148,12 @@ public class RedisUtils {
      * @param v
      */
     @SuppressWarnings("unchecked")
-	public void lPush(String k,Object v){
+	public void lPush(String k,Object v, Long expireTime){
         ListOperations<String, Object> list = redisTemplate.opsForList();
         list.rightPush(k,v);
+        if (expireTime != null) {
+            redisTemplate.expire(k, expireTime, TimeUnit.SECONDS);
+         }
     }
 
     /**
@@ -169,9 +175,12 @@ public class RedisUtils {
      * @param value
      */
     @SuppressWarnings("unchecked")
-	public void add(String key,Object value){
+	public void add(String key, Object value, Long expireTime){
         SetOperations<String, Object> set = redisTemplate.opsForSet();
         set.add(key,value);
+        if (expireTime != null) {
+           redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        }
     }
 
     /**
@@ -192,9 +201,12 @@ public class RedisUtils {
      * @param scoure
      */
     @SuppressWarnings("unchecked")
-	public void zAdd(String key,Object value,double scoure){
+	public void zAdd(String key,Object value, double scoure, Long expireTime){
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
         zset.add(key,value,scoure);
+        if (expireTime != null) {
+            redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        }
     }
 
     /**

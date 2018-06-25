@@ -1,8 +1,12 @@
 package com.qihai.permission.entity;
 
-import com.baomidou.mybatisplus.annotations.TableName;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import com.qihai.commerce.framework.entity.DataEntity;
+
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.qihai.permission.entity.common.CommonEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,375 +17,196 @@ import io.swagger.annotations.ApiModelProperty;
  * @email ${email}
  * @date 2018-05-29 09:05:47
  */
-@ApiModel("菜单按钮信息")
+@ApiModel("菜单模型")
 @TableName("auth_menu")
-public class AuthMenuEntity extends DataEntity<AuthMenuEntity> {
+public class AuthMenuEntity extends CommonEntity<AuthMenuEntity> {
 
 	private static final long serialVersionUID = 1L;
-    
-    /**
-	 * id
+
+	/**
+	 * 主键
 	 */
-	@ApiModelProperty(name="id",value="主键id")
-    private Long id;
-    
-    /**
-	 * 菜单名称
+	private Long id;
+
+	/**
+	 * 菜单编码
 	 */
-	@ApiModelProperty(name="menuName",value="菜单名称")
-    private String menuName;
-    
-    /**
-	 * 菜单父ID
+	@ApiModelProperty(name = "menuCode", value = "菜单编码")
+	private String menuCode;
+
+	/**
+	 * 标题
 	 */
-	@ApiModelProperty(name="parentId",value="菜单父ID")
-    private Long parentId;
-    
-    /**
-	 * 模块id
+	@ApiModelProperty(name = "menuTitle", value = "标题", required = true, dataType = "String")
+	@NotBlank(message = "标题不可为空")
+	private String menuTitle;
+
+	/**
+	 * 父级节点
 	 */
-    @ApiModelProperty(name="moduleId",value="模块id")
-    private Long moduleId;
-    
-    /**
-	 * 菜单URL
+	@ApiModelProperty(name = "parentId", value = "父级节点", required = true, dataType = "Long")
+	@NotNull(message = "父节点不可为空")
+	private Long parentId;
+
+	/**
+	 * 图标
 	 */
-    @ApiModelProperty(name="url",value="菜单URL")
-    private String url;
-    
-    /**
-	 * 分类编码
+	@ApiModelProperty(name = "menuIcon", value = "图标", dataType = "String")
+	private String menuIcon;
+
+	/**
+	 * 资源路径
 	 */
-    @ApiModelProperty(name="categoryCode",value="分类编码")
-    private String categoryCode;
-    
-    /**
-	 * 方法编码
+	@ApiModelProperty(name = "menuPath", value = "菜单路径", dataType = "String", required = true)
+	@NotBlank(message = "路径不可为空")
+	private String menuPath;
+
+	/**
+	 * 打开方式(_self 本页面打开，_blank 新建标签页打开)
 	 */
-    @ApiModelProperty(name="methodCode",value="方法编码")
-    private String methodCode;
-    
-    /**
-	 * 菜单功能描述
+	@ApiModelProperty(name = "menuType", value = "打开方式(_self 本页面打开，_blank 新建标签页打开)", dataType = "String")
+	private String menuType;
+
+	/**
+	 * 排序
 	 */
-    @ApiModelProperty(name="description",value="菜单功能描述")
-    private String description;
-    
-    /**
-	 * 服务编码
+	@ApiModelProperty(name = "displaySequence", value = "排序", dataType = "Integer")
+	@NotNull(message = "排序不可为空")
+	private Integer displaySequence;
+
+	/**
+	 * 描述
 	 */
-    @ApiModelProperty(name="serviceCode",value="服务编码")
-    private String serviceCode;
-    
-    /**
-	 * 是否锁定（0:使用中,1:锁定）默认:0
+	@ApiModelProperty(name = "description", value = "描述", dataType = "String")
+	private String description;
+
+	/**
+	 * 前端组件
 	 */
-    @ApiModelProperty(name="isLocked",value="是否锁定（0:使用中,1:锁定）默认:0")
-    private Integer isLocked;
-    
-    /**
-	 * 是否需要鉴权(1:是,0:否,-1:没有配置)
+	private String component;
+
+	/**
+	 * 权限ID
 	 */
-    @ApiModelProperty(name="isAuth",value="是否需要鉴权(1:是,0:否,-1:没有配置)")
-    private Integer isAuth;
-    
-    /**
-	 * 是否为公共菜单(1:是,0:否)
+	@ApiModelProperty(name = "authPermissionId", value = "权限ID，关联auth_permission的id")
+	private Long authPermissionId;
+
+	/**
+	 * 是否显示（1、代表显示 0、代表隐藏）
 	 */
-    @ApiModelProperty(name="isPublic",value="是否为公共菜单(1:是,0:否)")
-    private Integer isPublic;
-    
-    /**
-	 * 权限访问范围(default：默认 使用鉴权；public：公开 不需要权限认证；lock：锁定)
-	 */
-    @ApiModelProperty(name="privilege",value="权限访问范围(default：默认 使用鉴权；public：公开 不需要权限认证；lock：锁定)")
-    private String privilege;
-    
-    /**
-	 * 菜单方法路径映射
-	 */
-    @ApiModelProperty(name="menuMapping",value="菜单方法路径映射")
-    private String menuMapping;
-    
-    /**
+	private Integer displayFlag;
+
+	/**
 	 * 日志跟踪id
 	 */
-    @ApiModelProperty(hidden=true)
-    private String traceId;
-    
-    /**
-	 * 创建人
-	 */
-    @ApiModelProperty(hidden=true)
-    private String createdBy;
-    
-    /**
-	 * 最后更新人
-	 */
-    @ApiModelProperty(hidden=true)
-    private String updatedBy;
-    
-    /**
-	 * 版本
-	 */
-    @ApiModelProperty(name="version",value="版本")
-    private Long version;
-	
-	/**
-	 * 获取：id
-	 */
+	private String traceId;
+
 	public Long getId() {
 		return id;
 	}
-	
-	/**
-	 * 设置：id
-	 */
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	/**
-	 * 获取：菜单名称
-	 */
-	public String getMenuName() {
-		return menuName;
+
+	public String getMenuCode() {
+		return menuCode;
 	}
-	
-	/**
-	 * 设置：菜单名称
-	 */
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
+
+	public void setMenuCode(String menuCode) {
+		this.menuCode = menuCode;
 	}
-	
-	/**
-	 * 获取：菜单父ID
-	 */
+
+	public String getMenuTitle() {
+		return menuTitle;
+	}
+
+	public void setMenuTitle(String menuTitle) {
+		this.menuTitle = menuTitle;
+	}
+
 	public Long getParentId() {
 		return parentId;
 	}
-	
-	/**
-	 * 设置：菜单父ID
-	 */
+
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
-	
-	/**
-	 * 获取：模块id
-	 */
-	public Long getModuleId() {
-		return moduleId;
+
+	public String getMenuIcon() {
+		return menuIcon;
 	}
-	
-	/**
-	 * 设置：模块id
-	 */
-	public void setModuleId(Long moduleId) {
-		this.moduleId = moduleId;
+
+	public void setMenuIcon(String menuIcon) {
+		this.menuIcon = menuIcon;
 	}
-	
-	/**
-	 * 获取：菜单URL
-	 */
-	public String getUrl() {
-		return url;
+
+	public String getMenuPath() {
+		return menuPath;
 	}
-	
-	/**
-	 * 设置：菜单URL
-	 */
-	public void setUrl(String url) {
-		this.url = url;
+
+	public void setMenuPath(String menuPath) {
+		this.menuPath = menuPath;
 	}
-	
-	/**
-	 * 获取：分类编码
-	 */
-	public String getCategoryCode() {
-		return categoryCode;
+
+	public String getMenuType() {
+		return menuType;
 	}
-	
-	/**
-	 * 设置：分类编码
-	 */
-	public void setCategoryCode(String categoryCode) {
-		this.categoryCode = categoryCode;
+
+	public void setMenuType(String menuType) {
+		this.menuType = menuType;
 	}
-	
-	/**
-	 * 获取：方法编码
-	 */
-	public String getMethodCode() {
-		return methodCode;
+
+	public Integer getDisplaySequence() {
+		return displaySequence;
 	}
-	
-	/**
-	 * 设置：方法编码
-	 */
-	public void setMethodCode(String methodCode) {
-		this.methodCode = methodCode;
+
+	public void setDisplaySequence(Integer displaySequence) {
+		this.displaySequence = displaySequence;
 	}
-	
-	/**
-	 * 获取：菜单功能描述
-	 */
+
 	public String getDescription() {
 		return description;
 	}
-	
-	/**
-	 * 设置：菜单功能描述
-	 */
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	/**
-	 * 获取：服务编码
-	 */
-	public String getServiceCode() {
-		return serviceCode;
+
+	public String getComponent() {
+		return component;
 	}
-	
-	/**
-	 * 设置：服务编码
-	 */
-	public void setServiceCode(String serviceCode) {
-		this.serviceCode = serviceCode;
+
+	public void setComponent(String component) {
+		this.component = component;
 	}
-	
-	/**
-	 * 获取：是否锁定（0:使用中,1:锁定）默认:0
-	 */
-	public Integer getIsLocked() {
-		return isLocked;
+
+	public Long getAuthPermissionId() {
+		return authPermissionId;
 	}
-	
-	/**
-	 * 设置：是否锁定（0:使用中,1:锁定）默认:0
-	 */
-	public void setIsLocked(Integer isLocked) {
-		this.isLocked = isLocked;
+
+	public void setAuthPermissionId(Long authPermissionId) {
+		this.authPermissionId = authPermissionId;
 	}
-	
-	/**
-	 * 获取：是否需要鉴权(1:是,0:否,-1:没有配置)
-	 */
-	public Integer getIsAuth() {
-		return isAuth;
+
+	public Integer getDisplayFlag() {
+		return displayFlag;
 	}
-	
-	/**
-	 * 设置：是否需要鉴权(1:是,0:否,-1:没有配置)
-	 */
-	public void setIsAuth(Integer isAuth) {
-		this.isAuth = isAuth;
+
+	public void setDisplayFlag(Integer displayFlag) {
+		this.displayFlag = displayFlag;
 	}
-	
-	/**
-	 * 获取：是否为公共菜单(1:是,0:否)
-	 */
-	public Integer getIsPublic() {
-		return isPublic;
-	}
-	
-	/**
-	 * 设置：是否为公共菜单(1:是,0:否)
-	 */
-	public void setIsPublic(Integer isPublic) {
-		this.isPublic = isPublic;
-	}
-	
-	/**
-	 * 获取：权限访问范围(default：默认 使用鉴权；public：公开 不需要权限认证；lock：锁定)
-	 */
-	public String getPrivilege() {
-		return privilege;
-	}
-	
-	/**
-	 * 设置：权限访问范围(default：默认 使用鉴权；public：公开 不需要权限认证；lock：锁定)
-	 */
-	public void setPrivilege(String privilege) {
-		this.privilege = privilege;
-	}
-	
-	/**
-	 * 获取：菜单方法路径映射
-	 */
-	public String getMenuMapping() {
-		return menuMapping;
-	}
-	
-	/**
-	 * 设置：菜单方法路径映射
-	 */
-	public void setMenuMapping(String menuMapping) {
-		this.menuMapping = menuMapping;
-	}
-	
-	
-	/**
-	 * 获取：日志跟踪id
-	 */
+
 	public String getTraceId() {
 		return traceId;
 	}
-	
-	/**
-	 * 设置：日志跟踪id
-	 */
+
 	public void setTraceId(String traceId) {
 		this.traceId = traceId;
 	}
-	
-	/**
-	 * 获取：创建人
-	 */
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	
-	/**
-	 * 设置：创建人
-	 */
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	
-	/**
-	 * 获取：最后更新人
-	 */
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-	
-	/**
-	 * 设置：最后更新人
-	 */
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-	
-	/**
-	 * 获取：版本
-	 */
-	public Long getVersion() {
-		return version;
-	}
-	
-	/**
-	 * 设置：版本
-	 */
-	public void setVersion(Long version) {
-		this.version = version;
-	}
 
-    @Override
+	@Override
 	public String toString() {
-	     return ReflectionToStringBuilder.toString(this);
+		return ReflectionToStringBuilder.toString(this);
 	}
 }

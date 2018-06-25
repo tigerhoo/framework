@@ -23,8 +23,6 @@ public class Swagger2Config {
                 .apis(RequestHandlerSelectors.basePackage("com.qihai.permission.controller"))
                 .paths(PathSelectors.any())
                 .build();
-                //.directModelSubstitute(org.joda.time.LocalDate.class, java.sql.Date.class)
-                //.directModelSubstitute(org.joda.time.DateTime.class, java.util.Date.class);
     }
     
     private ApiInfo apiInfo() {

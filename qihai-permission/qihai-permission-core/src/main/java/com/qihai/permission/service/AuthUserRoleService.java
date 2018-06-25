@@ -5,6 +5,7 @@ import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.permission.entity.AuthUserRoleEntity;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface AuthUserRoleService extends IService<AuthUserRoleEntity> {
 
     PageUtils queryPage(Map<String, Object> params, AuthUserRoleEntity authUserRole);
+
+	Set<Long> listUserAllRole(Long userId);
 }
 

@@ -4,20 +4,49 @@
 <mapper namespace="com.qihai.permission.dao.AuthUserRoleDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.qihai.permission.entity.AuthUserRoleEntity" id="authUserRoleMap">
-        <result property="id" column="id"/>
-        <result property="userId" column="user_id"/>
-        <result property="roleId" column="role_id"/>
-        <result property="dataRangeId" column="data_range_id"/>
-        <result property="enabledFlag" column="enabled_flag"/>
-        <result property="traceId" column="trace_id"/>
-        <result property="createdBy" column="created_by"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updatedBy" column="updated_by"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="delFlag" column="del_flag"/>
-        <result property="remarks" column="remarks"/>
-    </resultMap>
+	<resultMap
+		type="com.qihai.permission.entity.AuthUserRoleEntity"
+		id="authUserRoleMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="roleId" column="role_id" />
+		<result property="dataRangeId" column="data_range_id" />
+		<result property="enabledFlag" column="enabled_flag" />
+		<result property="traceId" column="trace_id" />
+		<result property="createdBy" column="created_by" />
+		<result property="createTime" column="create_time" />
+		<result property="updatedBy" column="updated_by" />
+		<result property="updateTime" column="update_time" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+
+	<select id="listUserAllRole" resultType="java.lang.Long">
+		<!-- select distinct role_id from auth_user_role where user_id=#{userId} 
+			and del_flag=0 -->
+		SELECT
+		role_id
+		FROM
+		auth_user_role b
+		WHERE
+		user_id=#{userId}
+		AND del_flag = 0
+		UNION
+		SELECT
+		role_id
+		FROM
+		auth_user_group a,
+		auth_group_role b,
+		auth_group c
+		WHERE
+		a.group_id =
+		b.group_id
+		and a.id=a.group_id
+		AND a.del_flag = 0
+		AND b.del_flag = 0
+		AND c.del_flag = 0
+		AND a.user_id=#{userId}
+	</select>
 
 
 </mapper>

@@ -3,25 +3,24 @@ package com.qihai.permission.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.commerce.framework.utils.Query;
 import com.qihai.permission.dao.AuthRolePermissionDao;
-import com.qihai.permission.dto.permission.AuthMenuDTO;
-import com.qihai.permission.dto.permission.AuthModuleDTO;
+import com.qihai.permission.dto.permission.AuthPermissionDTO;
+import com.qihai.permission.dto.permission.AuthRolePermissionDTO;
+import com.qihai.permission.dto.permission.PermissionDTO;
 import com.qihai.permission.dto.permission.AuthPermissionColumnDTO;
-import com.qihai.permission.entity.AuthMenuEntity;
+import com.qihai.permission.entity.AuthPermissionEntity;
 import com.qihai.permission.entity.AuthPermissionColumnEntity;
 import com.qihai.permission.entity.AuthRolePermissionColumnEntity;
 import com.qihai.permission.entity.AuthRolePermissionEntity;
-import com.qihai.permission.service.AuthMenuService;
+import com.qihai.permission.service.AuthPermissionService;
 import com.qihai.permission.service.AuthPermissionColumnService;
 import com.qihai.permission.service.AuthRolePermissionColumnService;
 import com.qihai.permission.service.AuthRolePermissionService;
@@ -31,7 +30,7 @@ public class AuthRolePermissionServiceImpl extends ServiceImpl<AuthRolePermissio
 		implements AuthRolePermissionService {
 
 	@Autowired
-	private AuthMenuService authMenuService;
+	private AuthPermissionService authPermissionService;
 
 	@Autowired
 	private AuthPermissionColumnService authPermissionColumnService;
@@ -54,12 +53,12 @@ public class AuthRolePermissionServiceImpl extends ServiceImpl<AuthRolePermissio
 	}
 
 	@Override
-	public List<AuthMenuDTO> listRolePermission(Long roleId, Long moduleId) {
-		List<AuthMenuEntity> authMenuEntitys = authMenuService.listByModuleId(moduleId);
-		List<AuthMenuDTO> authMenus = new ArrayList<AuthMenuDTO>();
+	public List<AuthPermissionDTO> listRolePermission(Long roleId, Long moduleId) {
+		List<AuthPermissionEntity> authMenuEntitys = authPermissionService.listByModuleId(moduleId);
+		List<AuthPermissionDTO> authMenus = new ArrayList<AuthPermissionDTO>();
 		if (authMenuEntitys != null && authMenuEntitys.size() > 0) {
-			for (AuthMenuEntity authMenuEntity : authMenuEntitys) {
-				AuthMenuDTO authMenu = new AuthMenuDTO();
+			for (AuthPermissionEntity authMenuEntity : authMenuEntitys) {
+				AuthPermissionDTO authMenu = new AuthPermissionDTO();
 				authMenu.setId(authMenuEntity.getId());
 				authMenu.setIsAuth(authMenuEntity.getIsAuth());
 				authMenu.setMenuName(authMenuEntity.getMenuName());
@@ -115,44 +114,130 @@ public class AuthRolePermissionServiceImpl extends ServiceImpl<AuthRolePermissio
 		return authPermissionColumns;
 	}
 
+
+	/**
+	 * 添加角色和权限之间的关联关系。
+	 */
 	@Override
 	@Transactional
-	public void saveRolePermission(Long roleId, List<AuthModuleDTO> authModules) {
-		List<AuthRolePermissionEntity> authRolePermissions = new ArrayList<AuthRolePermissionEntity>();
-		List<AuthRolePermissionColumnEntity> authRolePermissionColumns = new ArrayList<AuthRolePermissionColumnEntity>();
-		for (AuthModuleDTO authModuleDTO : authModules) {
-			List<AuthMenuDTO> authMenus = authModuleDTO.getAuthMenus();
-			if (authMenus != null && authMenus.size() > 0) {
-				for (AuthMenuDTO authMenuDTO : authMenus) {
-					Long permissionId = authMenuDTO.getId();
-					AuthRolePermissionEntity authRolePermission = new AuthRolePermissionEntity();
-					authRolePermission.setRoleId(roleId);
-					authRolePermission.setPermissionId(permissionId);
-					authRolePermissions.add(authRolePermission);
-					List<AuthPermissionColumnDTO> authPermissionColumns = authMenuDTO.getAuthPermissionColumns();
-					if (authPermissionColumns != null && authPermissionColumns.size() > 0) {
-						for (AuthPermissionColumnDTO authPermissionColumnDTO : authPermissionColumns) {
-							Long permissionColumnId = authPermissionColumnDTO.getId();
-							if (permissionColumnId != null) {
-								AuthRolePermissionColumnEntity authRolePermissionColumn = new AuthRolePermissionColumnEntity();
-								authRolePermissionColumn.setRoleId(roleId);
-								authRolePermissionColumn.setPermissionColumnId(permissionColumnId);
-								authRolePermissionColumn.setPermissionId(permissionId);
-								authRolePermissionColumns.add(authRolePermissionColumn);
-							}
-						}
+	public void saveOrUpdate(AuthRolePermissionDTO rolePermission) {
+		Long roleId = rolePermission.getRoleId();
+		List<PermissionDTO> deleteList = rolePermission.getDeleteList();
+		if (deleteList != null && deleteList.size() > 0) {
+			// 删除关联关系
+			for (PermissionDTO permissionDTO : deleteList) {
+				Long permissionId = permissionDTO.getPermissionId();
+				List<Long> columnIds = permissionDTO.getPermissionColumnIds();
+				if (columnIds != null && columnIds.size() > 0) {
+					for (Long columnId : columnIds) {
+						AuthRolePermissionColumnEntity rpc = new AuthRolePermissionColumnEntity();
+						rpc.setRoleId(roleId);
+						rpc.setPermissionId(permissionId);
+						rpc.setPermissionColumnId(columnId);
+						authRolePermissionColumnService.delete(new EntityWrapper<AuthRolePermissionColumnEntity>(rpc));
 					}
 				}
+
+				AuthRolePermissionEntity arp = new AuthRolePermissionEntity();
+				arp.setRoleId(roleId);
+				arp.setPermissionId(permissionId);
+				this.delete(new EntityWrapper<AuthRolePermissionEntity>(arp));
 			}
 		}
 
-		if (authRolePermissions != null && authRolePermissions.size() > 0) {
-			this.insertBatch(authRolePermissions);
-		}
-		if (authRolePermissionColumns != null && authRolePermissionColumns.size() > 0) {
-			authRolePermissionColumnService.insertBatch(authRolePermissionColumns);
+		List<PermissionDTO> addList = rolePermission.getAddList();
+		if (addList != null && addList.size() > 0) {
+			for (PermissionDTO permissionDTO : addList) {
+				Long permissionId = permissionDTO.getPermissionId();
+				List<Long> columnIds = permissionDTO.getPermissionColumnIds();
+				if (columnIds != null && columnIds.size() > 0) {
+					for (Long columnId : columnIds) {
+						AuthRolePermissionColumnEntity rpc = new AuthRolePermissionColumnEntity();
+						rpc.setRoleId(roleId);
+						rpc.setPermissionId(permissionId);
+						rpc.setPermissionColumnId(columnId);
+						authRolePermissionColumnService.insert(rpc);
+					}
+
+				}
+				AuthRolePermissionEntity arp = new AuthRolePermissionEntity();
+				arp.setRoleId(roleId);
+				arp.setPermissionId(permissionId);
+				this.insert(arp);
+			}
 		}
 
 	}
+
+	
+	
+	// @Override
+	// @Transactional
+	// /**
+	// * 先清除角色与权限之间的关联关系，然后重新插入关联相关的表中
+	// */
+	// public void saveRolePermission(Long roleId, List<AuthModuleDTO> authModules)
+	// {
+	// // 清除关联关系
+	// clearRolePermission(roleId);
+	// List<AuthRolePermissionEntity> authRolePermissions = new
+	// ArrayList<AuthRolePermissionEntity>();
+	// List<AuthRolePermissionColumnEntity> authRolePermissionColumns = new
+	// ArrayList<AuthRolePermissionColumnEntity>();
+	// for (AuthModuleDTO authModuleDTO : authModules) {
+	// List<AuthPermissionDTO> authMenus = authModuleDTO.getAuthMenus();
+	// if (authMenus != null && authMenus.size() > 0) {
+	// for (AuthPermissionDTO authMenuDTO : authMenus) {
+	// Long permissionId = authMenuDTO.getId();
+	// AuthRolePermissionEntity authRolePermission = new AuthRolePermissionEntity();
+	// authRolePermission.setRoleId(roleId);
+	// authRolePermission.setPermissionId(permissionId);
+	// authRolePermissions.add(authRolePermission);
+	// List<AuthPermissionColumnDTO> authPermissionColumns =
+	// authMenuDTO.getAuthPermissionColumns();
+	// if (authPermissionColumns != null && authPermissionColumns.size() > 0) {
+	// for (AuthPermissionColumnDTO authPermissionColumnDTO : authPermissionColumns)
+	// {
+	// Long permissionColumnId = authPermissionColumnDTO.getId();
+	// if (permissionColumnId != null) {
+	// AuthRolePermissionColumnEntity authRolePermissionColumn = new
+	// AuthRolePermissionColumnEntity();
+	// authRolePermissionColumn.setRoleId(roleId);
+	// authRolePermissionColumn.setPermissionColumnId(permissionColumnId);
+	// authRolePermissionColumn.setPermissionId(permissionId);
+	// authRolePermissionColumns.add(authRolePermissionColumn);
+	// }
+	// }
+	// }
+	// }
+	// }
+	// }
+	//
+	// if (authRolePermissions != null && authRolePermissions.size() > 0) {
+	// this.insertBatch(authRolePermissions);
+	// }
+	// if (authRolePermissionColumns != null && authRolePermissionColumns.size() >
+	// 0) {
+	// authRolePermissionColumnService.insertBatch(authRolePermissionColumns);
+	// }
+	//
+	// }
+	//
+	//
+	// // 先清除角色权限之间的关联
+	// private void clearRolePermission(Long roleId) {
+	// AuthRolePermissionEntity authRolePermissionEntity = new
+	// AuthRolePermissionEntity();
+	// authRolePermissionEntity.setRoleId(roleId);
+	// this.delete(new
+	// EntityWrapper<AuthRolePermissionEntity>(authRolePermissionEntity));
+	// AuthRolePermissionColumnEntity authRolePermissionColumnEntity = new
+	// AuthRolePermissionColumnEntity();
+	// authRolePermissionColumnEntity.setRoleId(roleId);
+	// authRolePermissionColumnService
+	// .delete(new
+	// EntityWrapper<AuthRolePermissionColumnEntity>(authRolePermissionColumnEntity));
+	//
+	// }
 
 }

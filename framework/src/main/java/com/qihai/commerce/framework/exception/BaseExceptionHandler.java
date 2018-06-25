@@ -18,6 +18,7 @@ import com.qihai.commerce.framework.utils.R;
  */
 @RestControllerAdvice
 public class BaseExceptionHandler {
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
@@ -26,6 +27,19 @@ public class BaseExceptionHandler {
 	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(BaseException.class)
 	public R handleBaseException(BaseException e) {
+		R r = new R();
+		r.setCode(e.getErrorCode());
+		r.setMsg(e.getMessage());
+
+		return r;
+	}
+	
+	/**
+	 * 处理自定义异常
+	 */
+	@SuppressWarnings("rawtypes")
+	@ExceptionHandler(ServiceException.class)
+	public R handleServiceException(ServiceException e) {
 		R r = new R();
 		r.setCode(e.getErrorCode());
 		r.setMsg(e.getMessage());
@@ -53,12 +67,17 @@ public class BaseExceptionHandler {
 		return r;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(Exception.class)
 	public R handleException(Exception e) {
 		logger.error(e.getMessage(), e);
 		R r = new R();
 		r.setCode(BizErrorCode.SysErrorType.SYSTEM_INNER_ERROR.getCode());
-		r.setMsg(BizErrorCode.SysErrorType.SYSTEM_INNER_ERROR.getDesc());
+		if (e.getMessage() != null && e.getMessage().length() > 100) { //固定大于100则取默认
+		    r.setMsg(BizErrorCode.SysErrorType.SYSTEM_INNER_ERROR.getDesc());
+		} else {
+			r.setMsg(e.getMessage());
+		}
 		return r;
 	}
 }

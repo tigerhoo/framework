@@ -11,9 +11,11 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.qihai.commerce.framework.utils.PageUtils;
 import com.qihai.commerce.framework.utils.Query;
 import com.qihai.permission.dao.UserInfoDao;
+import com.qihai.permission.dto.UserGroupDTO;
 import com.qihai.permission.dto.UserRoleDTO;
 import com.qihai.permission.entity.UserInfoEntity;
 import com.qihai.permission.service.UserInfoService;
+import com.qihai.permission.vo.UserInfoVO;
 
 @Service("userInfoService")
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity> implements UserInfoService {
@@ -34,6 +36,13 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
 	public Page<UserRoleDTO> listUserRole(Page<UserRoleDTO> page, Long id) {
 		Page<UserRoleDTO> pages = page.setRecords(userInfoDao.listUserRole(page,id));
 		return pages;
+	}
+
+	@Override
+	public Page<UserInfoVO> listUserInfo(Page<UserInfoVO> pages,UserInfoEntity userInfo) {
+		
+		return pages.setRecords(userInfoDao.listUserInfo(pages,userInfo));
+		
 	}
 
 }

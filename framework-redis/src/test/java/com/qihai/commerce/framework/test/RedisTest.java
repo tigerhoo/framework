@@ -3,19 +3,18 @@ package com.qihai.commerce.framework.test;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import com.qihai.commerce.framework.redis.JedisRedisClient;
+import com.qihai.commerce.framework.Application;
 import com.qihai.commerce.framework.redis.utils.RedisUtils;
 
-//* created by 洪楚洲 on 2017/12/11.
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration
 public class RedisTest {
 
    /* @Autowired

@@ -8,11 +8,11 @@
     <parent>
 	  <groupId>com.qihai</groupId>
 	  <artifactId>parent-pom</artifactId>
-	  <version>1.0.4-RELEASE</version>
+	  <version>1.0.5-RELEASE</version>
     </parent>
     <groupId>com.qihai.framework.redis</groupId>
     <artifactId>framework-redis</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-RELEASE</version>
     <packaging>jar</packaging>
     <dependencies>
 		<dependency>
@@ -23,6 +23,11 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+        <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+		    <scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
